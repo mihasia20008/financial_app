@@ -16,11 +16,7 @@
     "dialect": "postgres"
   },
   "production": {
-    "username": "user",
-    "password": null,
-    "database": "financial_prod",
-    "host": "127.0.0.1",
-    "port": 5432,
+    "use_env_variable": true,
     "dialect": "postgres"
   }
 }

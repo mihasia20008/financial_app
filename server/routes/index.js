@@ -6,5 +6,6 @@ module.exports = (app) => {
   }));
 
 	app.get('/api/users', usersController.show);
-  app.post('/api/users', usersController.create);
+  app.post('/api/signup', usersController.create);
+  app.post('/api/login', usersController.auth);
 };

@@ -2,6 +2,12 @@
 
 module.exports = (sequelize, DataTypes) => {
   const Bill = sequelize.define('Bill', {
+    id: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -23,13 +29,6 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: false,
 		}
   });
-
-  Bill.associate = (models) => {
-    Bill.belongsTo(models.User, {
-      foreignKey: 'userId',
-      onDelete: 'CASCADE',
-    });
-  };
 
   return Bill;
 };
