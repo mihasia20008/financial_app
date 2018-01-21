@@ -1,5 +1,4 @@
-const db = require('../models');
-const Bill = db.bills;
+const Bill = require('../models').bills;
 
 module.exports = {
     create(req, res) {
@@ -21,13 +20,7 @@ module.exports = {
                 UserId: req.params.id
             }
         })
-        .then(bills => {
-            console.log(bills);
-            res.status(200).send(bills)
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(400).send(err)
-        });
+        .then(bills => res.status(200).send(bills))
+        .catch(err => res.status(400).send(err));
     }
 };

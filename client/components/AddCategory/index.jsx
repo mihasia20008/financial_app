@@ -7,9 +7,7 @@ import { AppBar,
     CardTitle, 
     CardText, 
     Checkbox, 
-    MenuItem, 
     RaisedButton, 
-    SelectField,
     Snackbar, 
     TextField } from 'material-ui';
 
@@ -35,16 +33,13 @@ const style = {
     }
 };
 
-class AddBill extends Component {
+class AddCategory extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             name: '',
-            type: '',
-            value: '',
-            accumulate: false,
-            currency: '',
+            cost: true,
             redirect: false,
             infoOpen: false
         };
@@ -52,8 +47,7 @@ class AddBill extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleToggleMenuClick = props.onToggleMenuClick;
-        this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
-        this.handleSelectChange = this.handleSelectChange.bind(this);
+        this.handleCostChange = this.handleCostChange.bind(this);
         this.handleRequestClose = this.handleRequestClose.bind(this);
         this.goBack = this.goBack.bind(this);
     }
@@ -62,28 +56,20 @@ class AddBill extends Component {
 		this.props.history.goBack();
 	}
 
-    handleCheckboxChange() {
-        this.setState({ accumulate: !this.state.accumulate });
+    handleCostChange() {
+        this.setState({ cost: !this.state.cost });
     }
 
-    handleSelectChange(event, value) {
-        (value === 'RUB' || value === 'DOL' || value === 'EUR') ?
-            this.setState({ currency: value }) :
-            this.setState({ type: value });
-    }
-
-    handleChange(event, index, value) {
-		(typeof event.target.name !== 'undefined') ?
-			this.setState({ [event.target.name]: event.target.value }) :
-			this.handleSelectChange(event, value);
+    handleChange(event) {
+        this.setState({ [event.target.name]: event.target.value });
     }
 
     handleRequestClose() {
-        this.props.history.push('/bills');
+        this.props.history.push('/categories');
     }
     
     handleSubmit() {
-		fetch('/api/bills/new', {
+		fetch('/api/categories/new', {
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json'
@@ -109,65 +95,39 @@ class AddBill extends Component {
         const { redirect } = this.state;
 
 		if (redirect) {
-			return <Redirect to='/bills' />;
+			return <Redirect to='/categories' />;
 		}
 
         return (
             <div>
                 <AppBar
-                    title="Добавить счет"
+                    title="Добавить категорию"
                     onLeftIconButtonClick={this.handleToggleMenuClick}
                     className="app-title" />
                 <Card className="card-wrap">
 					<CardTitle
-						title="Заполните поля для добавления нового счета"
+						title="Заполните поля для добавления новой категории"
 						style={style.title}
 						titleStyle={style.titleText} />
 					<CardText style={style.text} >
 						<TextField
-							hintText="Мой счет"
+							hintText="Новая категория"
 							floatingLabelText="Название"
 							name="name"
 							value={this.state.name}
 							onChange={this.handleChange}
-							fullWidth={true} />
-                        <br />
-                        <SelectField
-                            className="select-item"
-							floatingLabelText="Тип счета"
-							value={this.state.type}
-							name="type"
-                            onChange={this.handleChange} 
-                            style={style.select} >
-							<MenuItem value="nal" primaryText="Наличные" />
-							<MenuItem value="card" primaryText="Банковская карта" />
-							<MenuItem value="bill" primaryText="Банковский счет" />
-						</SelectField>
-						<TextField
-							hintText="10 000"
-							floatingLabelText="Баланс"
-							name="value"
-							value={this.state.value}
-							onChange={this.handleChange}
-							fullWidth={true} />
-						<br />
-                        <SelectField
-                            className="select-item"
-							floatingLabelText="Валюта счета"
-							value={this.state.currency}
-							name="currency"
-                            onChange={this.handleChange}
-                            style={style.select} >
-							<MenuItem value="RUB" primaryText="Рубль, &#8381;" />
-							<MenuItem value="DOL" primaryText="Доллар, $" />
-							<MenuItem value="EUR" primaryText="Евро, &euro;" />
-                        </SelectField>
+                            fullWidth={true} />
                         <br />
                         <Checkbox
-                            label="Счет является накопительным?"
-                            checked={this.state.accumulate}
-                            onCheck={this.handleCheckboxChange}
+                            label="Расходная категория"
+                            checked={this.state.cost}
+                            onCheck={this.handleCostChange}
                             style={style.checkbox} />
+                        <br />
+                        <Checkbox
+                            label="Доходная категория"
+                            checked={!this.state.cost}
+                            onCheck={this.handleCostChange} />
 					</CardText>
 					<CardActions>
 						<RaisedButton 
@@ -180,7 +140,7 @@ class AddBill extends Component {
                 <Snackbar
                     open={this.state.infoOpen}
                     message={this.state.dataAdded ? 
-                        'Счет успешно добавлен.' : 
+                        'Категория успешно добавлена.' : 
                         'Упс, что-то пошло не так. Повторите попытку.'}
                     autoHideDuration={2000}
                     onRequestClose={this.handleRequestClose} />
@@ -189,4 +149,4 @@ class AddBill extends Component {
     }
 }
 
-export default AddBill;
+export default AddCategory;

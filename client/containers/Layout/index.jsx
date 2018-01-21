@@ -3,12 +3,15 @@ import { NavLink, Redirect, Route, Switch } from 'react-router-dom';
 
 import { MuiThemeProvider, Divider, Drawer, MenuItem } from 'material-ui';
 
+import RegistrationPage from '../../components/RegistrationPage';
+import LoginPage from '../../components/LoginPage';
+
 import ActionsPage from '../../components/ActionsPage';
 import BillsPage from '../../components/BillsPage';
 import CategoriesPage from '../../components/CategoriesPage';
-import RegistrationPage from '../../components/RegistrationPage';
-import LoginPage from '../../components/LoginPage';
+
 import AddBill from '../../components/AddBill';
+import AddCaterogy from '../../components/AddCategory';
 
 import PrivateRoute from '../../components/PrivateRoute';
 import PropsRoute from '../../components/PropsRoute';
@@ -68,6 +71,10 @@ class Layout extends Component {
                         <PrivateRoute path="/bills" 
                             redirectTo="/login"
                             component={BillsPage} 
+                            onToggleMenuClick={this.handleToggleMenu} />
+                        <PrivateRoute path="/categories/add" 
+                            redirectTo="/login"
+                            component={AddCaterogy} 
                             onToggleMenuClick={this.handleToggleMenu} />
                         <PrivateRoute path="/categories" 
                             redirectTo="/login"

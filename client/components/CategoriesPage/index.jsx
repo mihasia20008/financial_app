@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import { AppBar, FloatingActionButton } from 'material-ui';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
 const style = {
-	position: 'absolute',
-	right: 30,
-	bottom: 30
+	addButton: {
+		position: 'absolute',
+		right: 30,
+		bottom: 30
+	}	
 };
 
 export default class CategoriesPage extends Component {
@@ -33,11 +36,11 @@ export default class CategoriesPage extends Component {
 					className="app-title"
 				/>
 				Categories page
-				<div>
-					<FloatingActionButton style={style}>
+				<Link to={`${this.props.match.url}/add`}>
+					<FloatingActionButton style={style.addButton}>
 						<ContentAdd />
 					</FloatingActionButton>
-				</div>
+				</Link>
 			</div>
 		);
 	}
