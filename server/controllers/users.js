@@ -1,6 +1,5 @@
 const crypto = require('crypto');
 const User = require('../models').users;
-// const Op = require('sequelize').Op;
 
 /**
  * generates random string of characters i.e salt
@@ -31,40 +30,30 @@ const sha512 = (password, salt) => {
 	};
 };
 
-const saltHashPassword = (password, salt) => {
-	return sha512(password, salt);
-}
+const saltHashPassword = (password, salt) => sha512(password, salt);
 
 const verificateUser = (userPassword, salt, verificatingPassword) => {
-	console.log(userPassword);
-	console.log(saltHashPassword(verificatingPassword, salt).passwordHash);
 	return saltHashPassword(verificatingPassword, salt).passwordHash === userPassword;
 }
 
 const authByPin = (req, res) => {
-	return User.findAll({
-		where: {
-			id: req.body.id
-		}
+	return User.findById(req.body.id)
+	.then(user => {
+		console.log(user);
+		user.pin = JSON.parse(user.pin);
+		return user;
 	})
 	.then(user => {
-		console.log(user, 'pin');
-		if (!user.length) {
-			res.status(401).json({message: 'Неверный PIN-код.'})
-		}
-		user.pin = JSON.parse(user.pin);
-		console.log(user);
-		res.status(200).send(user);
+		let result = verificateUser(user.pin.passwordHash, user.pin.salt, req.body.password);
+		delete user.password, user.pin;
+		return {result, user};
 	})
-	// .then(user => {
-	// 	let reult = req.body.type === 'pin' ? 
-	// 		verificateUser(user.pin.passwordHash, user.pin.salt, req.body.password) :
-	// 		verificateUser(user.password.passwordHash, user.password.salt, req.body.password);
-	// 	return {result, user};
-	// })
-	// .then((result, user) => {
-	// 	result ? res.status(200).send(user) : res.status(401).send({message: 'Неверный логин или пароль.'})
-	// })
+	.then(data => {
+		data.result ? 
+			res.status(200).send(data.user) : 
+			res.status(401).send({message: 'Неверный PIN-код.'});
+	})
+	.catch(err => res.status(400).send(err));
 };
 
 const authByPass = (req, res) => {
@@ -88,7 +77,6 @@ const authByPass = (req, res) => {
 		return {result, user};
 	})
 	.then(data => {
-		console.log(data);
 		data.result ? 
 			res.status(200).send(data.user) : 
 			res.status(401).send({message: 'Неверный логин или пароль.'});

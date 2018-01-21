@@ -5,7 +5,11 @@ import PropTypes from 'prop-types';
 import { Dialog, FlatButton, TextField } from 'material-ui';
 
 const style = {
-    backgroungColor: 'rgba(0, 0, 0, 0.74)'
+    backgroungColor: 'rgba(0, 0, 0, 0.74)',
+    error: {
+		color: '#ef0032',
+  		fontSize: '16px'
+	},
 };
 
 class ModalDialog extends Component {
@@ -16,14 +20,30 @@ class ModalDialog extends Component {
             open: props.open,
             user: localStorage.getItem('userId'),
             password: '',
-            redirect: false
+            error: {
+				show: false,
+				value: ''
+			},
+			redirect: false
         };
 
         this.handleCancel = this.handleCancel.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(event) {
+        this.setState({ 
+            [event.target.name]: event.target.value,
+            error: {
+				show: false,
+				value: ''
+			}
+        });
     }
 
     handleCancel() {
+        localStorage.removeItem('userId');
         this.setState({ redirect: true });
     }
 
@@ -40,7 +60,29 @@ class ModalDialog extends Component {
                 type: 'pin'
 			})
         })
-        .then(res => console.log(res));
+        .then(res => {
+			if (res.status === 401) {
+				res.json()
+				.then(data => this.setState({
+					error: {
+						show: true,
+						value: data.message
+					}
+				}));
+			} else if (res.status === 400) {
+				res.json()
+				.then(data => console.log(data));
+				alert("Упс, что-то пошло не так ¯\\_(ツ)_/¯ \n\nПопробуйте перезагрузить страницу и повторить ввод данных.\n");
+			} else {
+				res.json()
+				.then(data => {
+					localStorage.setItem('userId', data.id);
+					sessionStorage.setItem('userPin', 'true');
+					this.setState({	redirect: true });
+				});
+			}
+		})
+		.catch(err => console.error(err));
     }
     
 
@@ -48,21 +90,21 @@ class ModalDialog extends Component {
         const { redirect } = this.state;
 
 		if (redirect) {
-			return <Redirect to='/login' />;
+			return <Redirect to='/' />;
 		}
 
         const actions = [
-            <FlatButton
-                key="0"
-                label="Отмена"
-                onClick={this.handleCancel}
-            />,
             <FlatButton
                 key="1"
                 label="Подтвердить"
                 primary={true}
                 onClick={this.handleSubmit}
             />,
+            <FlatButton
+                key="0"
+                label="Отмена"
+                onClick={this.handleCancel}
+            />
         ];
       
           return (
@@ -77,12 +119,18 @@ class ModalDialog extends Component {
                 <TextField 
                     hintText="1234"
                     floatingLabelText="PIN-код"
-                    name="pin"
+                    name="password"
                     type="password"
-                    value={this.state.pin}
+                    value={this.state.password}
                     onChange={this.handleChange}
                     fullWidth={true} />
                 <br />
+                {this.state.error.show ? 
+                    <p style={style.error}>
+                        {this.state.error.value}
+                    </p> : 
+                    '' 
+                }
               </Dialog>
           );
     }

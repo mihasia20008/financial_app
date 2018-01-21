@@ -43,7 +43,8 @@ export default class LoginPage extends Component {
 	}
 
 	componentDidMount() {
-		return localStorage.getItem('userId') && sessionStorage.getItem('userPin') ? <Redirect to='/' /> : '';
+		if (localStorage.getItem('userId')) 
+			this.setState({ redirect: true });
 	}
 
 	handleChange(event) {
@@ -87,10 +88,7 @@ export default class LoginPage extends Component {
 				.then(data => {
 					localStorage.setItem('userId', data.id);
 					sessionStorage.setItem('userPin', 'true');
-					this.setState({
-						redirect: true,
-						user: data
-					});
+					this.setState({	redirect: true });
 				});
 			}
 		})
@@ -135,6 +133,7 @@ export default class LoginPage extends Component {
 							hintText="someTestPassword123"
 							floatingLabelText="Пароль"
 							name="password"
+							type="password"
 							value={this.state.password}
 							onChange={this.handleChange}
 							fullWidth={true} />
