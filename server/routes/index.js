@@ -9,6 +9,8 @@ module.exports = (app) => {
 
   app.post('/api/categories/new', categoriesController.create);
   app.get('/api/categories/:id', categoriesController.show);
+  app.delete('/api/categories/:id', categoriesController.delete);
+  app.put('/api/categories/:id', categoriesController.update);
 
   app.post('/api/bills/new', billsController.create);
   app.get('/api/bills/:id', billsController.show);
@@ -16,6 +18,8 @@ module.exports = (app) => {
   app.put('/api/bills/:id', billsController.update);
 
   app.post('/api/users/new', usersController.create);
-  app.get('/api/users', usersController.show);
   app.post('/api/login', usersController.auth);
+  app.get('/api/users/:id', usersController.show);  
+  // app.delete('/api/users/:id', usersController.delete);
+  // app.put('/api/users/:id', usersController.update);
 };

@@ -10,8 +10,7 @@ import { AppBar,
 		List, 
 		ListItem, 
 		MenuItem,
-		Snackbar, 
-		Subheader } from 'material-ui';
+		Snackbar } from 'material-ui';
 import { grey400, darkBlack } from 'material-ui/styles/colors';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import ContentAdd from 'material-ui/svg-icons/content/add';
@@ -29,7 +28,6 @@ const style = {
 		width: '44px',
 		height: '44px'
 	}
-	
 };
 
 class BillsPage extends Component {
@@ -102,7 +100,7 @@ class BillsPage extends Component {
 	handleCloseEditForm() {
 		this.setState({
 			changeOpen: false,
-			edited: []
+			edited: {}
 		});
 	}
 
@@ -248,7 +246,7 @@ class BillsPage extends Component {
 				<Snackbar
                     open={this.state.infoOpen}
                     message={this.state.infoText}
-                    autoHideDuration={1500}
+                    autoHideDuration={1000}
                     onRequestClose={this.handleRequestClose} />
 			</div>
 		);

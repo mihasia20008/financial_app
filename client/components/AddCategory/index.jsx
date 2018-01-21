@@ -143,7 +143,7 @@ class AddCategory extends Component {
                     message={this.state.dataAdded ? 
                         'Категория успешно добавлена.' : 
                         'Упс, что-то пошло не так. Повторите попытку.'}
-                    autoHideDuration={2000}
+                    autoHideDuration={1000}
                     onRequestClose={this.handleRequestClose} />
             </div>
         );

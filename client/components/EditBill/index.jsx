@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 import { Dialog,
-    Card, 
-    CardActions, 
-    CardTitle, 
-    CardText, 
     Checkbox, 
     MenuItem, 
-    RaisedButton, 
     SelectField,
     FlatButton,
     TextField } from 'material-ui';
@@ -17,16 +11,7 @@ import { Dialog,
 const style = {
     error: {
         color: '#ef0032',
-            fontSize: '16px'
-    },
-    title: {
-        paddingBottom: 0
-    },
-    titleText: {
-        fontSize: '20px'
-    },
-    text: {
-        paddingTop: 0
+        fontSize: '16px'
     },
     select: {
         width: '100%'
