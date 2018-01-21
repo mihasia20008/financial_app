@@ -182,7 +182,7 @@ class AddBill extends Component {
                     message={this.state.dataAdded ? 
                         'Счет успешно добавлен.' : 
                         'Упс, что-то пошло не так. Повторите попытку.'}
-                    autoHideDuration={2000}
+                    autoHideDuration={1500}
                     onRequestClose={this.handleRequestClose} />
             </div>
         );

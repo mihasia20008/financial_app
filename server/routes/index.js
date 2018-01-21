@@ -12,6 +12,8 @@ module.exports = (app) => {
 
   app.post('/api/bills/new', billsController.create);
   app.get('/api/bills/:id', billsController.show);
+  app.delete('/api/bills/:id', billsController.delete);
+  app.put('/api/bills/:id', billsController.update);
 
   app.post('/api/users/new', usersController.create);
   app.get('/api/users', usersController.show);

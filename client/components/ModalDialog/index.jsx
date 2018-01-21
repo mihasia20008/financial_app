@@ -28,7 +28,6 @@ class ModalDialog extends Component {
     }
 
     handleSubmit() {
-        console.log(this);
         fetch('/api/login', {
             headers: {
 				'Accept': 'application/json',

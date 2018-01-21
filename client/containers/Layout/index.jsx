@@ -14,7 +14,7 @@ import AddBill from '../../components/AddBill';
 import AddCaterogy from '../../components/AddCategory';
 
 import PrivateRoute from '../../components/PrivateRoute';
-import PropsRoute from '../../components/PropsRoute';
+// import PropsRoute from '../../components/PropsRoute';
 
 const style = {
     activeLink: {

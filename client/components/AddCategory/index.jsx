@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
 import { AppBar, 
@@ -148,5 +149,10 @@ class AddCategory extends Component {
         );
     }
 }
+
+AddCategory.propTypes = {
+	onToggleMenuClick: PropTypes.func.isRequired,
+	history: PropTypes.object
+};
 
 export default AddCategory;

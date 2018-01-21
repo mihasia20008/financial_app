@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { AppBar, FloatingActionButton } from 'material-ui';
@@ -12,7 +13,7 @@ const style = {
 	}	
 };
 
-export default class CategoriesPage extends Component {
+class CategoriesPage extends Component {
 	constructor(props) {
 		super(props);
 
@@ -45,3 +46,10 @@ export default class CategoriesPage extends Component {
 		);
 	}
 }
+
+CategoriesPage.propTypes = {
+	onToggleMenuClick: PropTypes.func.isRequired,
+	match: PropTypes.object
+};
+
+export default CategoriesPage;
