@@ -1,10 +1,30 @@
 import React, { Component } from 'react';
 // import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
-import { AppBar, Card, CardActions, CardHeader, CardText, MenuItem, RaisedButton, SelectField, TextField } from 'material-ui';
+import { AppBar, Card, CardActions, CardTitle, CardText, MenuItem, RaisedButton, SelectField, TextField } from 'material-ui';
 
 // import { interactionActions } from '../../actions';
+
+
+const style = {
+	error: {
+		color: '#ef0032',
+  		fontSize: '16px'
+	},
+	title: {
+		paddingBottom: 0
+	},
+	titleText: {
+		fontSize: '20px'
+	},
+	text: {
+		paddingTop: 0
+	},
+	select: {
+		width: '100%'
+	}
+};
 
 
 export default class RegistrationPage extends Component {
@@ -49,7 +69,7 @@ export default class RegistrationPage extends Component {
 			body: JSON.stringify(this.state)
 		})
 		.then(res => {
-			if (res.status == 201) {
+			if (res.status === 201) {
 				res.json().then(data => {
 					localStorage.setItem('userId', data.id);
 					this.setState({ redirect: true, user: data });
@@ -73,9 +93,11 @@ export default class RegistrationPage extends Component {
 					showMenuIconButton={false}
 				/>
 				<Card className="card-wrap">
-					<CardHeader
-						title="Заполните поля для регистрации в приложении"	/>
-					<CardText>
+					<CardTitle
+						title="Заполните поля для регистрации в приложении"
+						style={style.title}
+						titleStyle={style.titleText} />
+					<CardText style={style.text} >
 						<TextField
 							hintText="+7 (999) 999-99-99"
 							floatingLabelText="Номер телефона"
@@ -141,7 +163,8 @@ export default class RegistrationPage extends Component {
 							floatingLabelText="Валюта по умолчанию"
 							value={this.state.currency}
 							name="currency"
-							onChange={this.handleChange} >
+							onChange={this.handleChange} 
+							style={style.select} >
 							<MenuItem value={1} primaryText="Рубль, &#8381;" />
 							<MenuItem value={2} primaryText="Доллар, $" />
 							<MenuItem value={3} primaryText="Евро, &euro;" />
@@ -152,9 +175,7 @@ export default class RegistrationPage extends Component {
 							label="Зарегистрироваться" 
 							primary={true}
 							onClick={this.handleSubmit} />
-						<Link to="/login">
-							<RaisedButton onClick={this.goBack} label="Отмена	" />
-						</Link>
+						<RaisedButton onClick={this.goBack} label="Отмена	" />
 					</CardActions>
 				</Card>
 			</div>

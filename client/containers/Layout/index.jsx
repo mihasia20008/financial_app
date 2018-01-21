@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { NavLink, Redirect, Route, Switch } from 'react-router-dom';
 
-import { MuiThemeProvider, Drawer, MenuItem } from 'material-ui';
+import { MuiThemeProvider, Divider, Drawer, MenuItem } from 'material-ui';
 
 import ActionsPage from '../../components/ActionsPage';
 import BillsPage from '../../components/BillsPage';
 import CategoriesPage from '../../components/CategoriesPage';
 import RegistrationPage from '../../components/RegistrationPage';
 import LoginPage from '../../components/LoginPage';
+import AddBill from '../../components/AddBill';
 
 import PrivateRoute from '../../components/PrivateRoute';
 import PropsRoute from '../../components/PropsRoute';
@@ -31,10 +32,16 @@ class Layout extends Component {
         };
 
         this.handleToggleMenu = this.handleToggleMenu.bind(this);
+        this.handleLogout = this.handleLogout.bind(this);
     }
 
     handleToggleMenu() { 
         this.setState({ open: !this.state.open });
+    }
+
+    handleLogout() {
+        localStorage.removeItem('userId');
+        sessionStorage.removeItem('userPin');
     }
 
     render() {
@@ -53,6 +60,10 @@ class Layout extends Component {
                         <PrivateRoute path="/actions" 
                             redirectTo="/login"
                             component={ActionsPage} 
+                            onToggleMenuClick={this.handleToggleMenu} />
+                        <PrivateRoute path="/bills/add" 
+                            redirectTo="/login"
+                            component={AddBill} 
                             onToggleMenuClick={this.handleToggleMenu} />
                         <PrivateRoute path="/bills" 
                             redirectTo="/login"
@@ -98,7 +109,7 @@ class Layout extends Component {
                                 Статистика
                             </MenuItem>
                         </NavLink>
-                        <hr />
+                        <Divider />
                         <NavLink to="/personal" 
                             activeStyle={style.activeLink}
                             style={style.link} >
@@ -107,9 +118,10 @@ class Layout extends Component {
                             </MenuItem>
                         </NavLink>
                         <NavLink to="/login" 
+                            onClick={this.handleLogout}
                             activeStyle={style.activeLink}
                             style={style.link} >
-                            <MenuItem onClick={this.handleLogout}>    
+                            <MenuItem onClick={this.handleToggleMenu}>    
                                 Выход
                             </MenuItem>
                         </NavLink>

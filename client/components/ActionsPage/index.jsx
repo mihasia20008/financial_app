@@ -13,9 +13,9 @@ export default class ActionsPage extends Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			user: props.location.state.user
-		};
+		// this.state = {
+		// 	user: props.location.state.user
+		// };
 
 		this.handleToggleMenuClick = props.onToggleMenuClick;
 	}
@@ -30,6 +30,7 @@ export default class ActionsPage extends Component {
 				<AppBar
 					title="Действия"
 					onLeftIconButtonClick={this.handleToggleMenuClick}
+					className="app-title"
 				/>
 				Home page
 				<div>

@@ -4,10 +4,11 @@ import { Provider } from 'react-redux';
 
 import { AppContainer } from 'react-hot-loader';
 
-import store from './store';
+import configureStore from './store';
 
 import App from './containers/App';
 
+const store = configureStore();
 
 const renderComponent = (Component) => {
   render(

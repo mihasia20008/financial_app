@@ -30,6 +30,7 @@ export default class CategoriesPage extends Component {
 				<AppBar
 					title="Категории"
 					onLeftIconButtonClick={this.handleToggleMenuClick}
+					className="app-title"
 				/>
 				Categories page
 				<div>

@@ -2,6 +2,11 @@ body {
   margin: 0;
 }
 
+.app-title {
+  user-select: none;
+  cursor: default;
+}
+
 .card-wrap {
   min-height: calc(100vh - 64px);
   padding-bottom: 30px;

@@ -40,11 +40,11 @@ db.bills = require('./bill.js')(sequelize, Sequelize);
 db.operations = require('./operation.js')(sequelize, Sequelize);
 db.categories = require('./category.js')(sequelize, Sequelize);
 
-db.users.hasMany(db.bills, {foreignKey: 'userId', sourceKey: 'id'});
-db.users.hasMany(db.operations, {foreignKey: 'userId', sourceKey: 'id'});
-db.users.hasMany(db.categories, {foreignKey: 'userId', sourceKey: 'id'});
-db.bills.hasMany(db.operations, {foreignKey: 'billId', sourceKey: 'id'});
-db.categories.hasMany(db.operations, {foreignKey: 'categoryId', sourceKey: 'id'});
+db.users.hasMany(db.bills, {foreignKey: 'UserId', sourceKey: 'id'});
+db.users.hasMany(db.operations, {foreignKey: 'UserId', sourceKey: 'id'});
+db.users.hasMany(db.categories, {foreignKey: 'UserId', sourceKey: 'id'});
+db.bills.hasMany(db.operations, {foreignKey: 'BillId', sourceKey: 'id'});
+db.categories.hasMany(db.operations, {foreignKey: 'CategoryId', sourceKey: 'id'});
 
 db.bills.belongsTo(db.users);
 db.operations.belongsTo(db.users);

@@ -40,31 +40,31 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       },
-      userId: {
+      UserId: {
         type: Sequelize.UUID,
         onDelete: 'CASCADE',
         references: {
           model: 'Users',
           key: 'id',
-          as: 'userId',
+          as: 'UserId',
         },
       },
-      billId: {
+      BillId: {
         type: Sequelize.UUID,
         onDelete: 'CASCADE',
         references: {
           model: 'Bills',
           key: 'id',
-          as: 'billId',
+          as: 'BillId',
         },
       },
-      categoryId: {
+      CategoryId: {
         type: Sequelize.UUID,
         onDelete: 'CASCADE',
         references: {
           model: 'Categories',
           key: 'id',
-          as: 'userId',
+          as: 'CategoryId',
         },
       }
     }),

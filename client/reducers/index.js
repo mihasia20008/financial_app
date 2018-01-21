@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 
 import { signUp } from './signup';
-import { toggleLeftMenu } from './interaction';
+// import { toggleLeftMenu } from './interaction';
 
-const reducers = combineReducers({
+const rootReducer = combineReducers({
 	signUp,
 	// toggleLeftMenu
 });
 
-export default reducers;
+export default rootReducer;
