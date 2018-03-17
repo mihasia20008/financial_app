@@ -1,5 +1,5 @@
 {
-  "develop": {
+  "development": {
     "username": "financial_user",
     "password": "financial",
     "database": "financial_dev",
@@ -13,6 +13,10 @@
     "database": "financial_test",
     "host": "127.0.0.1",
     "port": 5432,
+    "dialect": "postgres"
+  },
+  "production": {
+    "use_env_variable": true,
     "dialect": "postgres"
   }
 }
