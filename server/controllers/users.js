@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const User = require('../models').users;
+const User = require('../models').user;
 
 /**
  * generates random string of characters i.e salt
@@ -85,9 +85,11 @@ const authByPass = (req, res) => {
 };
 
 module.exports = {
-  create(req, res) {
-    return User
-      .create({
+  	create(req, res) {
+		console.log('create');  
+		console.log(req.body);
+		return User
+			.create({
 				lastName: req.body.lastName,
 				firstName: req.body.firstName,
 				email: req.body.email,
@@ -100,7 +102,7 @@ module.exports = {
 				delete user.password, user.pin;
 				return user;
 			})
-      .then(user => res.status(201).send(user))
+			.then(user => res.status(201).send(user))
 			.catch(err => res.status(400).send(err));
 	},
 	auth(req, res) {
