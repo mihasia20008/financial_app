@@ -2,25 +2,31 @@
 
 module.exports = (sequelize, DataTypes) => {
   const Category = sequelize.define('Category', {
-    id: {
-      type: DataTypes.UUID,
-      primaryKey: true,
-      defaultValue: DataTypes.UUIDV4,
-      allowNull: false
-    },
     name: {
+      allowNull: false,
       type: DataTypes.STRING,
-			allowNull: false,
+    },
+    icon: {
+      allowNull: false,
+      type: DataTypes.STRING,
+    },
+    color: {
+      allowNull: false,
+      type: DataTypes.STRING,
     },
     cost: {
-      type: DataTypes.BOOLEAN,
-			defaultValue: false
+      defaultValue: true,
+      type: DataTypes.BOOLEAN
     },
     income: {
-      type: DataTypes.BOOLEAN,
-			defaultValue: false
+      defaultValue: false,
+      type: DataTypes.BOOLEAN
+    },
+    surely: {
+      defaultValue: false,
+      type: DataTypes.BOOLEAN
     }
-  });
+  }, {});
 
   return Category;
 };
