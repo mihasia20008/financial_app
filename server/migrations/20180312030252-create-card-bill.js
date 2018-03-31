@@ -7,14 +7,11 @@ module.exports = {
       primaryKey: true,
       type: Sequelize.INTEGER
     },
-    value: {
+    limit: { // Кредитный лимит
       allowNull: false,
       type: Sequelize.FLOAT
     },
-    accumulate: {
-      type: Sequelize.BOOLEAN
-    },
-    number: {
+    number: { // 4 цифры карты
       type: Sequelize.STRING
     },
     createdAt: {

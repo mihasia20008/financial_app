@@ -2,11 +2,10 @@
 
 module.exports = (sequelize, DataTypes) => {
   const CardBill = sequelize.define('CardBill', {
-    value: {
+    limit: { 
       allowNull: false,
-      type: DataTypes.FLOAT,
+      type: DataTypes.FLOAT
     },
-    accumulate: DataTypes.BOOLEAN,
     number: DataTypes.STRING
   }, {});
 

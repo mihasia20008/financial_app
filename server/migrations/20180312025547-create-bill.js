@@ -8,12 +8,33 @@ module.exports = {
       primaryKey: true,
       type: Sequelize.INTEGER
     },
-    name: {
+    name: { // Название
       allowNull: false,
       type: Sequelize.STRING
     },
-    currency: {
+    currency: { // Валюта
       type: Sequelize.INTEGER
+    },
+    type: { // Тип
+      allowNull: false,
+      defaultValue: 0,
+      type: Sequelize.INTEGER
+    },
+    value: { // Баланс
+      allowNull: false,
+      type: Sequelize.FLOAT
+    },
+    accumulate: { // Накопительный?
+      defaultValue: false,
+      type: Sequelize.BOOLEAN
+    },
+    consider: { // Учитывать в балансе?
+      defaultValue: true,
+      type: Sequelize.BOOLEAN
+    },
+    isArchival: { // Архивный?
+      defaultValue: false,
+      type: Sequelize.BOOLEAN
     },
     createdAt: {
       allowNull: false,

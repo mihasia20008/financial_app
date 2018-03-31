@@ -2,11 +2,22 @@
 
 module.exports = (sequelize, DataTypes) => {
   const DepositBill = sequelize.define('DepositBill', {
-    amount: DataTypes.FLOAT,
-    rate: DataTypes.FLOAT,
-    type: DataTypes.INTEGER,
-    term: DataTypes.DATE,
-    date: DataTypes.DATE
+    receiving: { 
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+      type: DataTypes.DATE
+    },
+    rate: { 
+      allowNull: false,
+      type: DataTypes.FLOAT
+    },
+    schedule: { 
+      type: DataTypes.INTEGER
+    },
+    term: { 
+      allowNull: false,
+      type: DataTypes.INTEGER
+    },
   }, {});
 
   return DepositBill;

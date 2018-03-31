@@ -8,17 +8,21 @@ module.exports = {
       primaryKey: true,
       type: Sequelize.INTEGER
     },
-    amount: {
+    receiving: { // Дата получения
+      allowNull: false,
+      defaultValue: Sequelize.NOW,
+      type: Sequelize.DATE
+    },
+    rate: { // Процентная ставка
+      allowNull: false,
       type: Sequelize.FLOAT
     },
-    rate: {
-      type: Sequelize.FLOAT
-    },
-    schedule: {
+    schedule: { // План (Аннуитетный 0 или Дифференцированный 1)
       type: Sequelize.INTEGER
     },
-    term: {
-      type: Sequelize.DATE
+    term: { // Срок в месяцах
+      allowNull: false,
+      type: Sequelize.INTEGER
     },
     createdAt: {
       allowNull: false,
