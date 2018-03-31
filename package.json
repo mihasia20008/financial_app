@@ -39,6 +39,7 @@
     "stylelint-config-standard": "^18.0.0"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "body-parser": "^1.18.2",
     "crypto": "^1.0.1",
     "express": "^4.16.2",
