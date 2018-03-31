@@ -1,11 +1,22 @@
 const Category = require('../models').category;
 const { Op } = require('Sequelize');
 
-
 module.exports = {
+    findOneCategory(id) {
+        return Category.findById(id)
+    },
+    findAllCategories(id) {
+        return Category.findAll({
+            where: {
+                UserId: {
+                    [Op.or]: [id, 1]
+                }
+            }
+        })
+    },
     create(req, res) {
         const { name, icon, color, cost, income, surely, user } = req.body;
-        return Category
+        Category
             .create({
                 name, icon, color, cost, income, surely,
                 UserId: user
@@ -14,33 +25,32 @@ module.exports = {
             .catch(err => res.status(400).send(err));
     },
     delete(req, res) {
-        return Category.findById(req.query.id)
+        this.findOneCategory(req.params.id)
             .then(category => category.destroy())
-            .then(() => res.status(202).send({message: "Категория успешно удалена."}))
+            .then(() => res.status(202).send({}))
             .catch(err => res.status(400).send(err));
     },
     update(req, res) {
         const { id, name, icon, color, cost, income, surely } = req.body;
-        return Category.findById(id)
+        this.findOneCategory(id)
             .then(category => category.update({
-                name, icon, color, cost, income, surely
+                name: name || category.name, 
+                icon: icon || category.icon,
+                color: color || category.color, 
+                cost: cost || category.cost, 
+                income: income || category.income,  
+                surely: surely || category.surely
             }))
-            .then(() => res.status(202).send({message: "Категория успешно обновлена."}))
+            .then(category => res.status(202).send(category))
             .catch(err => res.status(400).send(err));
     },
     showAll(req, res) {
-        return Category.findAll({
-            where: {
-                UserId: {
-                    [Op.or]: [req.query.id, 1]
-                }
-            }
-        })
+        this.findAllCategories(req.query.id)
             .then(categories => res.status(200).send(categories))
             .catch(err => res.status(400).send(err));
     },
     showOne(req, res) {
-        return Category.findById(req.params.id)
+        this.findOneCategory(req.params.id)
             .then(category => res.status(200).send(category))
             .catch(err => res.status(400).send(err));
     }
