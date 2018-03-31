@@ -37,7 +37,6 @@ db.user = require('./user.js')(sequelize, Sequelize);
 
 db.bill = require('./bill.js')(sequelize, Sequelize);  
 db.cardBill = require('./cardbill.js')(sequelize, Sequelize);  
-db.cashBill = require('./cashbill.js')(sequelize, Sequelize);  
 db.creditBill = require('./creditbill.js')(sequelize, Sequelize);  
 db.depositBill = require('./depositbill.js')(sequelize, Sequelize);  
 
@@ -56,7 +55,6 @@ db.user.hasMany(db.operation, {foreignKey: 'UserId', sourceKey: 'id'});
 
 db.bill.hasMany(db.operation, {foreignKey: 'BillId', sourceKey: 'id'});
 db.bill.hasMany(db.cardBill, {foreignKey: 'BillId', sourceKey: 'id'});
-db.bill.hasMany(db.cashBill, {foreignKey: 'BillId', sourceKey: 'id'});
 db.bill.hasMany(db.creditBill, {foreignKey: 'BillId', sourceKey: 'id'});
 db.bill.hasMany(db.depositBill, {foreignKey: 'BillId', sourceKey: 'id'});
 
@@ -75,7 +73,6 @@ db.operation.belongsTo(db.user);
 
 db.operation.belongsTo(db.bill);
 db.cardBill.belongsTo(db.bill);
-db.cashBill.belongsTo(db.bill);
 db.creditBill.belongsTo(db.bill);
 db.depositBill.belongsTo(db.bill);
 

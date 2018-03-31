@@ -2,37 +2,27 @@
 
 module.exports = (sequelize, DataTypes) => {
   const Operation = sequelize.define('Operation', {
-    id: {
-      type: DataTypes.UUID,
-      primaryKey: true,
-      defaultValue: DataTypes.UUIDV4,
-      allowNull: false
-    },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
     amount: {
-      type: DataTypes.FLOAT,
-			allowNull: false,
+      allowNull: false,
+      type: DataTypes.FLOAT
     },
     date: {
-      type: DataTypes.DATE,
-      allowNull: true
+      allowNull: false,
+      type: DataTypes.DATE
     },
-    comments: {
-      type: DataTypes.STRING,
-      allowNull: true,
+    comment: {
+      defaultValue: '',
+      type: DataTypes.STRING
     },
     retry: {
-      type: DataTypes.BOOLEAN,
       defaultValue: false,
+      type: DataTypes.BOOLEAN
     },
     type: {
-      type: DataTypes.STRING,
-			allowNull: false,
+      allowNull: false,
+      type: DataTypes.INTEGER
     }
-  });
+  }, {});
 
   return Operation;
 };
