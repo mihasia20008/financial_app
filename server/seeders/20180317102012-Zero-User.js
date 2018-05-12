@@ -4,6 +4,7 @@ module.exports = {
   up: queryInterface => queryInterface.bulkInsert('Users', [{
     firstName: 'user',
     lastName: 'default',
+    login: 'user-default',
     email: 'test@email.com',
     phone: '9998889988',
     password: 'testuser',

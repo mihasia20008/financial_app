@@ -3,13 +3,20 @@ const billsController = require('../controllers').bills;
 const operationsController = require('../controllers').operations;
 const categoriesController = require('../controllers').categories;
 
+const getTemplate = (path) => {
+  switch (path) {
+    case '/actions':
+      return {title: 'История', headerHidden: false};
+    default:
+      return {title: 'Главная', headerHidden: true};    
+  }
+};
+
 module.exports = (app) => {
-  app.get('/api', (req, res) => res.status(200).send({
-    message: 'Welcome to the API!'
-  }));
+  app.get('/api', (req, res) => res.status(200).send(getTemplate(req.query.path)));
 
   app.post('/api/signup', usersController.create);
-  app.post('/api/login', usersController.auth);
+  app.post('/api/signin', usersController.auth);
   app.get('/api/users/:id', usersController.show);  
   // app.delete('/api/users/:id', usersController.delete);
   // app.put('/api/users/:id', usersController.update);
