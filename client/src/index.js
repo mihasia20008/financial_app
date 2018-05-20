@@ -1,31 +1,12 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Provider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
 
-import { AppContainer } from 'react-hot-loader';
+import routes from './routes';
 
-import configureStore from './store';
-
-import App from './containers/App';
-
-const store = configureStore();
-
-const renderComponent = (Component) => {
-  render(
-    <AppContainer>
-      <Provider store={store}>
-        <Component />
-			</Provider>
-    </AppContainer>,
+render(
+    <Router>
+        {routes}
+    </Router>, 
     document.getElementById('root')
-  );
-};
-
-renderComponent(App);
-
-// Hot Module Replacement API
-if (module.hot) {
-    module.hot.accept("./containers/App", () => {
-      renderComponent(App)
-    });
-}
+);

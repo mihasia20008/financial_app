@@ -1,48 +1,77 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import cx from 'classnames';
 
-import { history } from '../../helpers';
+import './style.css';
 
-import Layout from '../Layout';
+import Header from '../../components/Header';
+import Menu from '../../components/Menu';
 
-
-import './style.scss';
-
-export default class App extends Component {
+class App extends Component {
 	constructor(props) {
 		super(props);
 
-		// this.state = {
-		// 	isOpen: false
-		// };
+		this.state = {
+            menuIsOpen: false,
+            headerHidden: false,
+            title: 'Загрузка...',
+            path: null
+        };
 
-		// const { dispatch } = this.props;
-		// history.listen((location, action) => {
-		// 	dispatch(alertActions.clear());
-		// 	});
+        this.handlerToggleMenu = this.handlerToggleMenu.bind(this);
+        this.handlerOutsideMenuClick = this.handlerOutsideMenuClick.bind(this);
+        this.handlerGetChildData = this.handlerGetChildData.bind(this);
 	}
 
-	// handleToggleMenu () {
-	// 	this.setState({isOpen: !this.state.open});
-	// } 
+    handlerGetChildData(data) {
+        this.setState({...data});
+    }
+
+    handlerToggleMenu() {
+        if (!this.state.menuIsOpen) {
+            document.addEventListener('click', this.handlerOutsideMenuClick, false);
+        } else {
+            document.removeEventListener('click', this.handlerOutsideMenuClick, false);
+        }
+
+        this.setState(prevState => ({menuIsOpen: !prevState.menuIsOpen}));
+    }
+
+    handlerOutsideMenuClick(event) {
+        if (this.node && this.node.contains(event.target)) {
+            return;
+        }
+        this.handlerToggleMenu();
+    }
 
 	render() {
+        const { component: Chidren } = this.props;
+        const { pathname } = this.props.location;        
+        const { title, menuIsOpen, headerHidden } = this.state;
+		
 		return (
-			<Router>
-				<Layout />
-			</Router>
+			<div className={menuIsOpen ? 'app app--menu-open' : 'app'}>
+				<div key={0} className="app__wrap">
+					<header className={cx('app__header', {
+                        'app__header--hidden': headerHidden
+                    })}>
+						<Header title={title} headerHidden={headerHidden} menuIsOpen={menuIsOpen} toggleMenu={this.handlerToggleMenu} />
+					</header>
+					<main className="app__main">
+						<Chidren getDataOnLoad={data => this.handlerGetChildData(data)} path={pathname} />
+					</main>
+				</div>
+				<div key={1} className="app__menu" ref={node => { this.node = node; }}>
+					<Menu />
+				</div>
+			</div>
 		);
 	}
 }
 
-// const App = ({store}) => {
-// 	// <Provider>
-// 	// 	<Router>
-// 	// 		<Route path="/" component={Home} />
-// 	// 	</Router>
-// 	// </Provider>
-//   console.log(store, 'test');
-//   return <div>Test</div>;
-// };
+App.propTypes = {
+	component: PropTypes.func.isRequired,
+	location: PropTypes.object.isRequired
+};
 
+export default App;
