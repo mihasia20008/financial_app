@@ -25,7 +25,15 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING,
     pin: DataTypes.STRING,
     currency: DataTypes.INTEGER,
-    language: DataTypes.INTEGER
+    language: DataTypes.INTEGER,
+    confirmAccount: {
+      defaultValue: false,
+      type: DataTypes.BOOLEAN,
+    },
+    confirmHash: {
+      allowNull: false,
+      type: DataTypes.STRING,
+    }
   }, {});
 
   return User;

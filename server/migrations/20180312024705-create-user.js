@@ -40,6 +40,14 @@ module.exports = {
     language: {
       type: Sequelize.INTEGER
     },
+    confirmAccount: {
+      defaultValue: false,
+      type: Sequelize.BOOLEAN,
+    },
+    confirmHash: {
+      allowNull: false,
+      type: Sequelize.STRING,
+    },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE

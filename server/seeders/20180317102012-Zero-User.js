@@ -11,6 +11,8 @@ module.exports = {
     pin: '0000',
     currency: 0,
     language: 0,
+    confirmAccount: true,
+    confirmHash: 'testhash',
     createdAt: '2018-03-17',
     updatedAt: '2018-03-17'
   }], {}),
