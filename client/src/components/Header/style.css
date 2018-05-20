@@ -1,0 +1,26 @@
+.header {
+    display: flex;
+    align-items: center;
+}
+
+.header__button {
+    box-sizing: content-box;
+    background-color: transparent;
+    border: none;
+    width: 30px;
+    height: 30px;
+    padding: 16px;
+}
+
+.header__button:hover {
+    cursor: pointer;
+}
+
+.header__button:focus {
+    outline: none;
+}
+
+.header__title {
+    margin: 0;
+    font-size: 34px;
+}
