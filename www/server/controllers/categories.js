@@ -1,5 +1,5 @@
 const Category = require('../models').category;
-const Op = require('Sequelize').Op;
+const Op = require('sequelize').Op;
 
 module.exports = {
     findOneCategory(id) {

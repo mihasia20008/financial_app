@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "financial_user",
-    "password": "financial",
-    "database": "financial_dev",
-    "host": "127.0.0.1",
+    "username": "postgres",
+    "password": "postgres",
+    "database": "my_db",
+    "host": "postgres",
     "port": 5432,
     "dialect": "postgres"
   },
