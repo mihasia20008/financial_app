@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "postgres",
-    "password": "postgres",
-    "database": "my_db",
-    "host": "postgres",
+    "username": "financial_user",
+    "password": "financial",
+    "database": "financial_dev",
+    "host": "127.0.0.1",
     "port": 5432,
     "dialect": "postgres"
   },
@@ -16,7 +16,11 @@
     "dialect": "postgres"
   },
   "production": {
-    "use_env_variable": true,
+    "username": "postgres",
+    "password": "postgres",
+    "database": "my_db",
+    "host": "postgres",
+    "port": 5432,
     "dialect": "postgres"
   }
 }
