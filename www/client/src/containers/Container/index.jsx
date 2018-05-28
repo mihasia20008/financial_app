@@ -20,8 +20,7 @@ const Container = ({component, privateRoute, ...rest}) => {
 
 Container.propTypes = {
 	component: PropTypes.func.isRequired,
-    privateRoute: PropTypes.bool,
-    path: PropTypes.string.isRequired
+    privateRoute: PropTypes.bool
 };
 
 export default Container;

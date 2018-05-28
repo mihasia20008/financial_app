@@ -24,7 +24,8 @@ module.exports = {
 				confirmHash: confirmData.passwordHash.substr(0, 16)
 			})
 			.then(user => new Promise((resolve, reject) => {
-				delete user.password, user.pin;
+				delete user.dataValues.password;
+				delete user.dataValues.pin;
 				sendMail(
 					'confirm',
 					req.body.firstname, 
@@ -99,10 +100,10 @@ module.exports = {
 					resolve(user.update({confirmAccount: true}));
 			}))
 			.then(user => {
-				delete user.password, user.pin;
-				return user;
+				delete user.dataValues.password;
+				delete user.dataValues.pin;
+				res.status(200).send(user)
 			})
-			.then(user => res.status(200).send(user))
 			.catch(err => {
 				if (typeof err.message !== 'undefined')
 					res.status(400).send({message: err.message});

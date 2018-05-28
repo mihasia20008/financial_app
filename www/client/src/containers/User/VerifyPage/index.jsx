@@ -1,22 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 
+import * as userActions from '../../../store/user/actions';
 import { getParamsFromUrl } from '../../../helpers';
 
 class VerifyPage extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            timeIsOver: false,
-            confirm: 0
-        };
-    }
-
     componentDidMount() {
-        const { getDataOnLoad, path } = this.props;
+        const { getDataOnLoad, path, dispatch } = this.props;
 
         axios.get(`/api?path=${path}`)
             .then(res => getDataOnLoad(res.data))
@@ -25,30 +18,19 @@ class VerifyPage extends Component {
         const id = getParamsFromUrl('id'),
             hash = getParamsFromUrl('hash');
         
-        if (!!id && !!hash) 
-            setTimeout(() => {
-                axios.get(`/api/confirm?id=${id}&hash=${hash}`)
-                    .then(res => {
-                        localStorage.setItem('user', res.data.login);
-                        localStorage.setItem('confirm', true);
-                        this.setState({confirm: 2});
-                    })
-                    .catch(err => {
-                        if (typeof err.response.data.message !== 'undefined') {
-                            global.alert(err.response.data.message);
-                            this.setState({error: true});
-                        } else
-                            this.setState({confirm: 1});
-                    });
-            }, 1000);
-        else this.setState({error: true});
+        dispatch(userActions.confirmUser(id, hash));
     }
 
     render() {
-        if (this.state.confirm !== 2 && localStorage.getItem('user'))
+        const { isConfirm, hasError } = this.props;
+
+        console.log(isConfirm);
+        
+
+        if (isConfirm !== 2 && localStorage.getItem('user'))
             return <Redirect to={{ pathname: '/actions' }} />;
 
-        if (typeof this.state.error !== 'undefined' && this.state.error)
+        if (typeof hasError !== 'undefined' && hasError)
             return <Redirect to={{ pathname: '/' }} />;
 
         return (
@@ -59,15 +41,15 @@ class VerifyPage extends Component {
                     </svg>
                     <h1 className="auth-page__title">EasyCosts</h1>
                     <p className="auth-page__text">{
-                        this.state.confirm ? 
-                            this.state.confirm === 2 ? 
+                        isConfirm ? 
+                            isConfirm === 2 ? 
                                 'Ваш аккаунт успешно подтвержден' :
                                 'Во время подтверждения аккаунта произошла ошибка' :
                             'Ожидание подтверждения Вашего аккаунта'
                     }</p>
                     {
-                        this.state.confirm ? 
-                            this.state.confirm === 2 ? 
+                        isConfirm ? 
+                            isConfirm === 2 ? 
                                 <Link className="form-group__submit" to="/actions">
                                     Далее
                                 </Link> :
@@ -102,7 +84,17 @@ class VerifyPage extends Component {
 
 VerifyPage.propTypes = {
     getDataOnLoad: PropTypes.func.isRequired,
-    path: PropTypes.string.isRequired
+    path: PropTypes.string.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    isConfirm: PropTypes.number.isRequired,
+    hasError: PropTypes.bool
 };
 
-export default VerifyPage;
+function mapStateToProps (state) {
+    return {
+        isConfirm: state.user.isConfirm,
+        hasError: state.user.hasError
+    };
+}
+
+export default connect(mapStateToProps)(VerifyPage);

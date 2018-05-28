@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import cx from 'classnames';
+
+import * as userActions from '../../../store/user/actions';
 
 class SignInPage extends Component {
     constructor(props) {
@@ -12,7 +15,6 @@ class SignInPage extends Component {
             login: '',
             password: '',
             isLogin: true,
-            isAuth: 0,
             passType: 'password'
         };
 
@@ -43,34 +45,43 @@ class SignInPage extends Component {
 
     handlerShowPassword() {
         const { passType } = this.state;
-
         this.setState({passType: passType === 'password' ? 'text' : 'password'});
     }
     
     handlerSubmit(event) {
         event.preventDefault();
-        const { login, password, isLogin } = this.state;
+        const { dispatch } = this.props;
 
-        axios.post('/api/signin', {
+        const authData = {
             type: 'pass',
-            auth: login,
-            password,
-            isLogin
-        })
-            .then(res => {
-                if (res.status !== 200) return;
-                const { data } = res;
-                if (data.confirmAccount) {
-                    localStorage.setItem('user', data.login);
-                    localStorage.setItem('confirm', true);
-                    this.setState({isAuth: 1});
-                } else this.setState({isAuth: 2});
-            })
-            .catch(err => global.alert(err.response.data.message));
+            auth: this.state.login,
+            password: this.state.password,
+            isLogin: this.state.isLogin
+        };
+
+        dispatch(userActions.authUser(authData));
+
+        // axios.post('/api/signin', {
+        //     type: 'pass',
+        //     auth: login,
+        //     password,
+        //     isLogin
+        // })
+        //     .then(res => {
+        //         if (res.status !== 200) return;
+        //         const { data } = res;
+        //         if (data.confirmAccount) {
+        //             localStorage.setItem('user', data.login);
+        //             localStorage.setItem('confirm', true);
+        //             this.setState({isAuth: 1});
+        //         } else this.setState({isAuth: 2});
+        //     })
+        //     .catch(err => global.alert(err.response.data.message));
     }
 
     render() {
-        const { isLogin, isAuth, passType } = this.state;
+        const { isLogin, passType } = this.state;
+        const { isAuth } = this.props;
 
         if (isAuth === 1 || localStorage.getItem('user'))
             return <Redirect to={{ pathname: '/actions' }} />;
@@ -130,7 +141,15 @@ class SignInPage extends Component {
 
 SignInPage.propTypes = {
     getDataOnLoad: PropTypes.func.isRequired,
-    path: PropTypes.string.isRequired
+    path: PropTypes.string.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    isAuth: PropTypes.number.isRequired
 };
 
-export default SignInPage;
+function mapStateToProps(state) {
+    return {
+        isAuth: state.user.isAuth
+    };
+}
+
+export default connect(mapStateToProps)(SignInPage);
