@@ -1,5 +1,4 @@
 export const BILL_ADD_FETCH = 'BILL_ADD_FETCH';
-export const BILL_ADD_TOGGLE = 'BILL_ADD_TOGGLE';
 export const BILL_ADD_SUCCESS = 'BILL_ADD_SUCCESS';
 export const BILL_ADD_ERROR = 'BILL_ADD_ERROR';
 

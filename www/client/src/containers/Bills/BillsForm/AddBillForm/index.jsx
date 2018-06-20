@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 import cx from 'classnames';
 import axios from 'axios';
 
-import * as billActions from '../../../store/bill/actions';
-import { formatNumber } from '../../../helpers';
+import { addBill } from '../../../../store/bill/actions';
+import { formatNumber } from '../../../../helpers';
 
 import './style.css';
 
-import Input from '../../../components/Input';
+import Input from '../../../../components/Input';
 
 class AddBillForm extends Component {
     constructor(props) {
@@ -243,13 +243,12 @@ class AddBillForm extends Component {
         event.preventDefault();
 
         let data = {};
-        for (let item in this.state.main) {
-            const inputElement = document.querySelector(`input[name=${item}`);        
-            this.handleInputBlur(inputElement);  
+        for (let item in this.state.main) { 
             data[item] = item === 'value' ?
                 this.state.main[item].value.replace(/\D/g, '') :
                 this.state.main[item].value;
         }
+
         for (let item in this.state.sub) {
             if (!this.state.sub[item].show) continue;
             const inputElement = document.querySelector(`input[name=${item}`);        
@@ -259,24 +258,9 @@ class AddBillForm extends Component {
                 this.state.sub[item].value;
         }
 
-
-        
         if (!document.querySelectorAll('.form-group--error').length) {
             data.user = this.props.userId;
-            console.log(data);
-            this.props.dispatch(billActions.addBill(data));
-            // axios.post('/api/signup', data)
-            //     .then(res => {
-            //         if (res.status !== 201) {
-            //             global.alert('Ошибка регистрации пользователя!');
-            //             return;
-            //         }
-            //         this.setState({isSignUp: true});
-            //     })
-            //     .catch(err => {
-            //         global.alert(`Ошибка сервера. \n${err.response.data.code}: ${err.response.data.info} \n\nРазработчики уже усправляют эту проблему.`);
-            //         err.response.data.errors.map(error => console.error(error.message));
-            //     });
+            this.props.dispatch(addBill(data));
         }
     }
 

@@ -1,26 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import cx from 'classnames';
 
 import './style.css';
 
-const InputCheckbox = ({ value, name, label, onChangeParent, values, view }) => {
+const InputCheckbox = ({ value, isActive, label, onSelectEvent }) => {
     return (
-        <div className="form-group form-group--no-border">
-            <label className="form-group__label">{label}</label>
-            
-            <span className="form-group__error">Поле обязательно для заполнения!</span>
-        </div>
+        <label className="checkbox">
+            <input className="checkbox__input" 
+                type="checkbox"
+                value={value}
+                checked={isActive}
+                onChange={event => onSelectEvent(event.target.value)} />
+            <span className="checkbox__label">{label}</span>
+        </label>
     );
 };
 
 InputCheckbox.propTypes = {
     value: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
+    isActive: PropTypes.bool.isRequired,
     label: PropTypes.string.isRequired,
-    values: PropTypes.array.isRequired,
-    onChangeParent: PropTypes.func.isRequired,
-    view: PropTypes.number
-}
+    onSelectEvent: PropTypes.func.isRequired,
+};
 
 export default InputCheckbox;

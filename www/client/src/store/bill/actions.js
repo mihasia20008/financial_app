@@ -1,9 +1,7 @@
 import axios from 'axios';
 import * as types from './actionTypes';
 
-export function toggleAddBillForm() {
-    return dispatch => dispatch({ type: types.BILL_ADD_TOGGLE });
-}
+import { toggleAddForm } from '../form/actions';
 
 export function addBill(billData) {
     return async dispatch => {
@@ -13,7 +11,7 @@ export function addBill(billData) {
                 axios.post('/api/bill', billData)
                     .then(res => {
                         dispatch({ type: types.BILL_ADD_SUCCESS, bill: res.data });
-                        dispatch({ type: types.BILL_ADD_TOGGLE });
+                        dispatch(toggleAddForm());
                     })
                     .catch(err => reject(err));
             });

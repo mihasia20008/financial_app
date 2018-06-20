@@ -3,8 +3,7 @@ import * as types from './actionTypes';
 const initialState = {
     bills: {},
     billIds: [],
-    isFetching: false,
-    showAddForm: false
+    isFetching: false
 };
 
 export default function reduce(state = initialState, action = {}) {
@@ -14,10 +13,6 @@ export default function reduce(state = initialState, action = {}) {
         case types.BILLS_GET_FETCH:
             return Object.assign({}, state, {
                 isFetching: true
-            });
-        case types.BILL_ADD_TOGGLE:
-            return Object.assign({}, state, {
-                showAddForm: !state.showAddForm
             });
         case types.BILL_ADD_SUCCESS:
             return Object.assign({}, state, {

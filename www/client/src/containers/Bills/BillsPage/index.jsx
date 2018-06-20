@@ -1,17 +1,72 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import cx from 'classnames';
 import axios from 'axios';
 
-import { toggleAddBillForm } from '../../../store/bill/actions';
+import * as formActions from '../../../store/form/actions';
 
 import './style.css';
 
-import AddBillForm from '../AddBillForm';
 import BillCard from '../../../components/BillCard';
+import BillsForm from '../BillsForm';
+import AddBillForm from '../BillsForm/AddBillForm';
+import EditBillForm from '../BillsForm/EditBillForm';
+import SortBillForm from '../BillsForm/SortBillForm';
+import FilterBillForm from '../BillsForm/FilterBillForm';
 
 class BillsPage extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            sort: 'create-down',
+            filter: {
+                archive: {
+                    value: '1',
+                    label: 'Показывать архиные счета?',
+                    type: 'radio',
+                    values: [
+                        {
+                            value: '0',
+                            label: 'Нет'
+                        },
+                        {
+                            value: '1',
+                            label: 'Да'
+                        },
+                    ]
+                },
+                types: {
+                    value: ['0', '1'],
+                    label: 'Отображать типы счетов:',
+                    type: 'checkbox',
+                    values: [
+                        {
+                            value: '0',
+                            label: 'Наличные средства'
+                        },
+                        {
+                            value: '1',
+                            label: 'Банковские карты'
+                        },
+                        {
+                            value: '2',
+                            label: 'Кредитные счета'
+                        },
+                        {
+                            value: '3',
+                            label: 'Депозитные счета'
+                        },
+                    ]
+                },
+            }
+        };
+
+        this.handleSortSelect = this.handleSortSelect.bind(this);
+        this.handleFilterSelect = this.handleFilterSelect.bind(this);
+        this.sortBills = this.sortBills.bind(this);
+        this.filterBills = this.filterBills.bind(this);
+    }
     componentDidMount() {
         const { getDataOnLoad, path } = this.props;
 
@@ -20,26 +75,106 @@ class BillsPage extends Component {
             .catch(err => console.error(err));
     }
 
-    render() {   
-        const { bills, billsId, showAddForm, toggleAddForm } = this.props;
-        
-        document.body.style.overflow = !showAddForm ? 'auto' : 'hidden';
+    handleSortSelect(event, value) {
+        this.setState({ sort: value }); 
+        this.props.toggleSortForm(event);       
+    }
 
+    handleFilterSelect(event, filter) {
+        this.setState({ filter }); 
+        this.props.toggleFilterForm(event);       
+    }
+
+    sortBills() {
+        const { bills, billsId } = this.props;
+        const { sort } = this.state;
+        switch (sort) {
+            case 'create-down':
+                return billsId.sort((a, b) => {
+                    if (bills[a].create < bills[b].create)
+                        return -1;
+                    if (bills[a].create > bills[b].create)
+                        return 1;
+                    return 0;
+                });
+            case 'create-up':
+                return billsId.sort((a, b) => {
+                    if (bills[a].create > bills[b].create)
+                        return -1;
+                    if (bills[a].create < bills[b].create)
+                        return 1;
+                    return 0;
+                });
+            case 'balance-up':
+                return billsId.sort((a, b) => {
+                    if (+bills[a].value < +bills[b].value)
+                        return -1;
+                    if (+bills[a].value > +bills[b].value)
+                        return 1;
+                    return 0;
+                });
+            case 'balance-down':
+                return billsId.sort((a, b) => {
+                    if (+bills[a].value > +bills[b].value)
+                        return -1;
+                    if (+bills[a].value < +bills[b].value)
+                        return 1;
+                    return 0;
+                });
+            case 'abc':
+                return billsId.sort((a, b) => {
+                    if (bills[a].name < bills[b].name)
+                        return -1;
+                    if (bills[a].name > bills[b].name)
+                        return 1;
+                    return 0;
+                });
+                
+            default: 
+                return billsId;
+        }
+    }
+
+    filterBills(id) {
+        const { bills } = this.props;
+        const { filter } = this.state;
+
+        let inFilter = true;                        
+        if (filter.archive.value === '0' && bills[id].isArchival)
+            inFilter = false;                        
+        if (filter.types.value.every(item => +item !== bills[id].type))
+            inFilter = false;
+        return inFilter;
+    }
+
+    render() {   
+        const { 
+            bills, 
+            billsId, 
+            toggleAddForm, 
+            toggleEditForm, 
+            toggleSortForm, 
+            toggleFilterForm, 
+            formShow 
+        } = this.props;
+        const { sort, filter } = this.state;
+        
         return (
             <div className="bills">
                 <div className="bills__list">
-                    {typeof billsId !== 'undefined' ? billsId.map((bill, index) => {
-                        return (
-                            <div key={index} className="bills__list-item">
-                                <BillCard  {...bills[bill]} />
-                            </div>
-                        );
-                    }) : ''}
+                    {typeof billsId !== 'undefined' ? 
+                        this.sortBills().filter(id => this.filterBills(id)).map((bill, index) => {
+                            return (
+                                <div key={index} className="bills__list-item">
+                                    <BillCard  {...bills[bill]} />
+                                </div>
+                            );
+                        }) : ''}
                     <div className="bills__list-item">
                         <div className="bill bill--add">
                             <a href="/createbill" 
                                 className="bill-add" 
-                                onClick={event => toggleAddForm(event, showAddForm)}>
+                                onClick={event => toggleAddForm(event)}>
                                 <svg className="bill-add__icon">
                                     <use xlinkHref="#add-bill-icon" />
                                 </svg>
@@ -48,23 +183,30 @@ class BillsPage extends Component {
                         </div>
                     </div>
                 </div>
-                <div className={cx("bills__add-form bills-add", {
-                    'bills__add-form--show': showAddForm
-                })}>
-                    <h3 className="bills-add__title">Добавить счет</h3>
-                    <button type="button"
-                        className="bills-add__close" 
-                        onClick={event => toggleAddForm(event, showAddForm)}>
-                        <svg className="bills-add__close-icon">
-                            <use xlinkHref="#close-icon" />
-                        </svg>
-                    </button>
-                    {!showAddForm ? '' :
-                        <div className="bills-add__content">
-                            <AddBillForm isModal={true} />
-                        </div>
-                    }
-                </div>
+                <BillsForm title="Добавить счет" 
+                    show={formShow.showAddForm} 
+                    toggleForm={event => toggleAddForm(event)}>
+                    <AddBillForm isModal={true} />
+                </BillsForm>
+                <BillsForm title="Изменить счет" 
+                    show={formShow.showEditForm} 
+                    toggleForm={event => toggleEditForm(event)}>
+                    <EditBillForm isModal={true} />
+                </BillsForm>
+                <BillsForm title="Сортировка" 
+                    show={formShow.showSortForm} 
+                    toggleForm={event => toggleSortForm(event)}>
+                    <SortBillForm isModal={true} 
+                        activeSort={sort}
+                        onSortSelect={(event, value) => this.handleSortSelect(event, value)} />
+                </BillsForm>
+                <BillsForm title="Фильтры" 
+                    show={formShow.showFilterForm} 
+                    toggleForm={event => toggleFilterForm(event)}>
+                    <FilterBillForm isModal={true}
+                        filters={filter}
+                        onFilterSelect={(event, filter) => this.handleFilterSelect(event, filter)} />
+                </BillsForm>
                 <div className="bills__overlay"></div>
             </div>
         );
@@ -75,25 +217,40 @@ BillsPage.propTypes = {
     path: PropTypes.string.isRequired,
     getDataOnLoad: PropTypes.func.isRequired,
     userId: PropTypes.number,
+    formShow: PropTypes.object,
     bills: PropTypes.object,
     billsId: PropTypes.array,
-    showAddForm: PropTypes.bool.isRequired,
-    toggleAddForm: PropTypes.func.isRequired
+    toggleAddForm: PropTypes.func.isRequired,
+    toggleEditForm: PropTypes.func.isRequired,
+    toggleSortForm: PropTypes.func.isRequired,
+    toggleFilterForm: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {   
     return {
         bills: state.bill.bills,
         billsId: state.bill.billIds,
-        showAddForm: state.bill.showAddForm
+        formShow: state.form
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        toggleAddForm: (event, showAddForm) => {
+        toggleAddForm: event => {
             event.preventDefault();
-            dispatch(toggleAddBillForm());
+            dispatch(formActions.toggleAddForm());
+        },
+        toggleEditForm: event => {
+            event.preventDefault();
+            dispatch(formActions.toggleEditForm());
+        },
+        toggleSortForm: event => {
+            event.preventDefault();
+            dispatch(formActions.toggleSortForm());
+        },
+        toggleFilterForm: event => {
+            event.preventDefault();
+            dispatch(formActions.toggleFilterForm());
         }
     }
 }

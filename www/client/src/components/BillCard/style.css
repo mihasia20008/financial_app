@@ -144,7 +144,7 @@
 
 .bill-actions__item {
     flex-grow: 1;
-    flex-basis: 50%;
+    flex-basis: 33.33%;
 }
 
 .bill-actions__item:first-child .bill-action {
@@ -174,7 +174,7 @@
 .bill-action__name {
     margin: 5px 0 0;
     color: #fff;
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .bill-action--edit {
