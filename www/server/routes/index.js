@@ -7,6 +7,8 @@ const getTemplate = (path) => {
   switch (path) {
     case '/actions':
       return {title: 'История', headerHidden: false};
+    case '/bills':
+      return {title: 'Счета', headerHidden: false};
     default:
       return {title: 'Главная', headerHidden: true};    
   }
@@ -21,7 +23,7 @@ module.exports = (app) => {
   app.post('/api/forgotpassword', usersController.forgotPassword); // Отправка письма со ссылкой для восстановления пароля
   app.post('/api/restorepassword', usersController.restorePassword); // Восстановление пароля
   app.get('/api/checkdata', usersController.checkData); // Проверка существования пользователя с переданными параметрами
-  app.get('/api/users/:id', usersController.show);  
+  app.get('/api/user', usersController.show);  
   // app.delete('/api/users/:id', usersController.delete);
   // app.put('/api/users/:id', usersController.update);
 

@@ -1,0 +1,104 @@
+.add-bill {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.add-bill__wrap {
+    padding: 0 10px;
+}
+
+.add-bill__step {
+    display: none;
+    flex-direction: column;
+    max-height: 100%;
+    transition: 0s;
+    background-color: #fff;
+}
+
+.add-bill__step .form-group {
+    padding-left: 20px;
+    background-color: #fff;
+    border: 2px solid #aa00ff;
+}
+
+.add-bill__step .form-group__input,
+.add-bill__step .form-group__label {
+    color: #aa00ff;
+    text-shadow: none;
+}
+
+.add-bill__step .form-group__label {
+    padding: 0 10px;
+    left: 20px;
+}
+
+.add-bill__step .form-group__error {
+    color: #E000E8;
+}
+
+.add-bill__step .form-group__input:focus ~ .form-group__label,
+.add-bill__step .form-group__input:valid ~ .form-group__label {
+    top: -13px;
+    font-size: 15px;
+    background-color: #fff;
+}
+
+.add-bill__step--active,
+.add-bill__step--show {
+    display: flex;
+}
+
+.add-bill__step--active {
+    /* background-color: #fff; */
+    flex-grow: 5;
+    max-height: 100%;
+    transition: 0s;
+}
+
+.add-bill__step--show {
+    flex-grow: 1;
+    transition: 0.1s linear;
+    max-height: 150px;
+    overflow: hidden;
+}
+
+.add-bill__step--show .add-bill__button--next {
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.5s linear;
+    display: none;
+}
+
+.add-bill__step-title {
+    text-align: center;
+    font-size: 24px;
+    line-height: 1;
+    margin: 20px 0 25px;
+    color: #6200ea;
+}
+
+.add-bill__step-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.add-bill__button {
+    padding: 15px 0;
+    color: #fff;
+    border: none;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px; 
+    font-size: 20px;
+    text-transform: uppercase;
+}
+
+.add-bill__button--submit {
+    background-color: #0FA200;
+}
+
+.add-bill__button--next {
+    background-color: #6200ea;
+}

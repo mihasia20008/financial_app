@@ -7,7 +7,7 @@ import Modal from '../Modal';
 
 const Container = ({component, privateRoute, ...rest}) => {
         if (privateRoute) {
-            if (localStorage.getItem('user') && !localStorage.getItem('confirm'))
+            if (localStorage.getItem('user') && !sessionStorage.getItem('confirm'))
                 return [
                     <Route key={0} {...rest} render={matchProps => <App {...matchProps} component={component} />} />,
                     <Modal key={1} />

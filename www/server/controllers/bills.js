@@ -78,7 +78,11 @@ module.exports = {
                 UserId: body.user
             })
             .then(bill => billType.createType(body.type, bill.dataValues, body))
-            .then(bill => res.status(201).send(bill))
+            .then(bill => {
+                bill.userId = bill.UserId;
+                delete bill.UserId;
+                res.status(201).send(bill)
+            })
             .catch(err => res.status(400).send(err.toString()));
     },
     delete(req, res) {
@@ -110,7 +114,7 @@ module.exports = {
             .then(bill => res.status(202).send(bill))
             .catch(err => res.status(400).send(err.toString()));
     },
-    showAll(req, res) {
+    showAll(req, res) {        
         Bill.findAll({
             include: [
                 { model: CardBill },
@@ -131,7 +135,7 @@ module.exports = {
             }) 
             // .then(bills => bills.sort((a, b) => a.id - b.id))
             .then(bills => res.status(200).send(bills))
-            .catch(err => res.status(400).send(err.toString()));         
+            .catch(err => res.status(400).send(err));         
     },
     showOne(req, res) {
         Bill.findOne({

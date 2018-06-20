@@ -20,6 +20,16 @@
     outline: none;
 }
 
+.header__button--float {
+    margin-left: auto;
+}
+
+.header__button-icon {
+    width: 100%;
+    height: 100%;
+    fill: #fff;
+}
+
 .header__title {
     margin: 0;
     font-size: 34px;

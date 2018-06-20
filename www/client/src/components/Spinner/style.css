@@ -1,0 +1,16 @@
+.spinner {
+    width: 100%;
+    height: 100%;
+    animation: rotating 2s ease infinite;
+}
+  
+  
+@keyframes rotating {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(720deg);
+    }
+}
+  

@@ -41,7 +41,7 @@
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 1;
+    z-index: 10;
     background-color: rgba(0, 0, 0, 0.1);
     visibility: hidden;
     opacity: 0;
@@ -73,8 +73,10 @@
     position: relative;
     flex-grow: 1;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+}
+
+.app__main > * {
+    margin: auto;
 }
 
 .icon-wait {
@@ -95,6 +97,10 @@
     to {
       transform: rotate(-360deg);
     }
+}
+
+.auth-page {
+    width: 600px;
 }
 
 .auth-page::before {
@@ -125,7 +131,6 @@
 .auth-page__wrap {
     position: relative;
     z-index: 2;
-    max-width: 600px;
     width: 100%;
     height: 100%;
     margin: 30px auto;
@@ -157,13 +162,26 @@
 
 .form-group {
     position: relative;
-    border-radius: 20px;
+    border-radius: 10px;
     background-color: rgba(255, 255, 255, 0.15);
     border: 2px solid #fff;
     padding-left: 50px;
     padding-right: 20px;   
     margin-bottom: 32px; 
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.form-group--no-border {
+    box-shadow: none;
+    border: none !important;
+    border-radius: 0;
+    padding: 0 !important;
+}
+
+.form-group--no-border .form-group__label {
+    position: static;
+    display: block;
+    margin-bottom: 10px;
 }
 
 .form-group--error {
@@ -274,7 +292,7 @@
 
 .form-group__label {
     position: absolute;
-    top: calc(50% - 12px);
+    top: calc(50% - 13px);
     left: 60px;
     pointer-events: none;
     font-size: 18px;
@@ -291,7 +309,7 @@
     height: 42px;
     font-size: 20px;
     text-align: center;
-    border-radius: 20px;
+    border-radius: 10px;
     line-height: 1;
     border: none;
     color: #fff;

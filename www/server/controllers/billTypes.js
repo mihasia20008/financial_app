@@ -6,7 +6,7 @@ module.exports = {
     createType(type, bill, data) {
         return new Promise((resolve, reject) => {
             switch (type) {
-                case 1:
+                case '1':
                     CardBill.create({
                         limit: data.limit,
                         number: data.number,
@@ -23,7 +23,7 @@ module.exports = {
                         )))
                         .catch(err => reject(err)); 
                     break; 
-                case 2:
+                case '2':
                     CreditBill.create({
                         receiving: data.receiving,
                         rate: data.rate,
@@ -44,7 +44,7 @@ module.exports = {
                         )))
                         .catch(err => reject(err)); 
                     break; 
-                case 3:
+                case '3':
                     DepositBill.create({
                         receiving: data.receiving,
                         rate: data.rate,
@@ -73,7 +73,7 @@ module.exports = {
         return new Promise((resolve, reject) => {
             if (type === data.type) {
                 switch (type) {
-                    case 1:
+                    case '1':
                         CardBill.findOne({
                             where: {
                                 BillId: parent.id
@@ -94,7 +94,7 @@ module.exports = {
                             )))
                             .catch(err => reject(err)); 
                         break; 
-                    case 2:
+                    case '2':
                         CreditBill.findOne({
                             where: {
                                 BillId: parent.id
@@ -119,7 +119,7 @@ module.exports = {
                             )))
                             .catch(err => reject(err)); 
                         break; 
-                    case 3:
+                    case '3':
                         DepositBill.findOne({
                             where: {
                                 BillId: parent.id
@@ -148,7 +148,7 @@ module.exports = {
                 }
             } else {
                 switch (type) {
-                    case 1:
+                    case '1':
                         CardBill.findOne({
                             where: {
                                 BillId: parent.id
@@ -159,7 +159,7 @@ module.exports = {
                             .then(bill => resolve(bill))
                             .catch(err => reject(err)); 
                         break; 
-                    case 2:
+                    case '2':
                         CreditBill.findOne({
                             where: {
                                 BillId: parent.id
@@ -170,7 +170,7 @@ module.exports = {
                             .then(bill => resolve(bill))
                             .catch(err => reject(err)); 
                         break; 
-                    case 3:
+                    case '3':
                         DepositBill.findOne({
                             where: {
                                 BillId: parent.id
@@ -188,7 +188,7 @@ module.exports = {
             }
         });
     },
-    getType(type, bill, data) {
+    getType(type, bill, data) {        
         return new Promise(resolve => {
             switch (type) {
                 case 1:

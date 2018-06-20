@@ -81,9 +81,21 @@ module.exports = {
 			});
 	},
 	show(req, res) {
-		User.all()
-			.then(users => res.status(200).send(users))
+		User.findOne({
+			where: {
+				login: req.query.login
+			}
+		})
+			.then(user => {
+				delete user.dataValues.password;
+				delete user.dataValues.pin;
+				return user;
+			})
+			.then(user => res.status(200).send(user))
 			.catch(err => res.status(400).send(err));
+		// User.all()
+		// 	.then(users => res.status(200).send(users))
+		// 	.catch(err => res.status(400).send(err));
 	},
 	confirm(req, res) {
 		if (req.query.id === 'null' && req.query.hash === 'null') {

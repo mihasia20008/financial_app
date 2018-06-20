@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 
-import * as userActions from '../../../store/user/actions';
+import { confirmUser } from '../../../store/user/actions';
 import { getParamsFromUrl } from '../../../helpers';
 
 class VerifyPage extends Component {
@@ -18,7 +18,7 @@ class VerifyPage extends Component {
         const id = getParamsFromUrl('id'),
             hash = getParamsFromUrl('hash');
         
-        dispatch(userActions.confirmUser(id, hash));
+        dispatch(confirmUser(id, hash));
     }
 
     render() {

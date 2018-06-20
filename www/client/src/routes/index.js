@@ -13,6 +13,7 @@ import {
     NeedConfirmPage } from '../containers/User';
 
 import ActionsPage from '../containers/ActionsPage';
+import BillsPage from '../containers/Bills/BillsPage';
 
 export default (
     <Switch>
@@ -23,6 +24,7 @@ export default (
         <Container path="/verify" component={VerifyPage} />
         <Container path="/needconfirm" component={NeedConfirmPage} />
         <Container path="/actions" privateRoute component={ActionsPage} />
+        <Container path="/bills" privateRoute component={BillsPage} />
         <Container component={NotFoundPage} />
     </Switch>
 );

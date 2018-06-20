@@ -5,7 +5,7 @@ import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import cx from 'classnames';
 
-import * as userActions from '../../../store/user/actions';
+import { authUser } from '../../../store/user/actions';
 
 class SignInPage extends Component {
     constructor(props) {
@@ -59,24 +59,7 @@ class SignInPage extends Component {
             isLogin: this.state.isLogin
         };
 
-        dispatch(userActions.authUser(authData));
-
-        // axios.post('/api/signin', {
-        //     type: 'pass',
-        //     auth: login,
-        //     password,
-        //     isLogin
-        // })
-        //     .then(res => {
-        //         if (res.status !== 200) return;
-        //         const { data } = res;
-        //         if (data.confirmAccount) {
-        //             localStorage.setItem('user', data.login);
-        //             localStorage.setItem('confirm', true);
-        //             this.setState({isAuth: 1});
-        //         } else this.setState({isAuth: 2});
-        //     })
-        //     .catch(err => global.alert(err.response.data.message));
+        dispatch(authUser(authData));
     }
 
     render() {

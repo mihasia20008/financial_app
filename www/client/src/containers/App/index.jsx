@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import cx from 'classnames';
+
+import { getUser, logoutUser } from '../../store/user/actions';
 
 import './style.css';
 
 import Header from '../../components/Header';
 import Menu from '../../components/Menu';
+import Overlay from '../../components/Overlay';
 
 class App extends Component {
 	constructor(props) {
@@ -21,7 +26,12 @@ class App extends Component {
         this.handlerToggleMenu = this.handlerToggleMenu.bind(this);
         this.handlerOutsideMenuClick = this.handlerOutsideMenuClick.bind(this);
         this.handlerGetChildData = this.handlerGetChildData.bind(this);
-	}
+    }
+    
+    componentDidMount() {
+        const login = localStorage.getItem('user');
+        if (login) this.props.getUser(login);
+    }
 
     handlerGetChildData(data) {
         this.setState({...data});
@@ -45,10 +55,13 @@ class App extends Component {
     }
 
 	render() {
-        const { component: Chidren } = this.props;
+        const { component: Chidren, userId, isFetching, isLogout } = this.props;
         const { pathname } = this.props.location;        
         const { title, menuIsOpen, headerHidden } = this.state;
-		
+        
+        if (isLogout)
+            return <Redirect to="/" />;
+
 		return (
 			<div className={menuIsOpen ? 'app app--menu-open' : 'app'}>
 				<div key={0} className="app__wrap">
@@ -58,12 +71,13 @@ class App extends Component {
 						<Header title={title} headerHidden={headerHidden} menuIsOpen={menuIsOpen} toggleMenu={this.handlerToggleMenu} />
 					</header>
 					<main className="app__main">
-						<Chidren getDataOnLoad={data => this.handlerGetChildData(data)} path={pathname} />
+						<Chidren userId={userId} getDataOnLoad={data => this.handlerGetChildData(data)} path={pathname} />
 					</main>
 				</div>
 				<div key={1} className="app__menu" ref={node => { this.node = node; }}>
-					<Menu />
+					<Menu toggleMenu={this.handlerToggleMenu} callLogout={this.props.logoutUser} />
 				</div>
+                {isFetching ? <Overlay key={2} /> : ''}
 			</div>
 		);
 	}
@@ -71,7 +85,30 @@ class App extends Component {
 
 App.propTypes = {
 	component: PropTypes.func.isRequired,
-	location: PropTypes.object.isRequired
+    location: PropTypes.object.isRequired,
+    getUser: PropTypes.func.isRequired,
+    logoutUser: PropTypes.func.isRequired,
+    userId: PropTypes.number,
+    isFetching: PropTypes.bool.isRequired,
+    isLogout: PropTypes.bool.isRequired
 };
 
-export default App;
+function mapStateToProps (state) {
+    return {
+        isFetching: state.bill.isFetching || state.user.isFetching,
+        userId: state.user.id,
+        isLogout: state.user.isLogout
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        getUser: (login) => dispatch(getUser(login)),
+        logoutUser: () => dispatch(logoutUser()),
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(App);
