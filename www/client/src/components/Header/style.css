@@ -24,6 +24,10 @@
     margin-left: auto;
 }
 
+.header__button--hidden {
+    display: none;
+}
+
 .header__button-icon {
     width: 100%;
     height: 100%;

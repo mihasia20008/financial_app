@@ -36,9 +36,11 @@ export function deleteBill(id) {
     };
 }
 
+export function updateBill(data) {
+    return dispatch => dispatch({ type: types.BILL_UPDATE_DATA, bill: data });
+}
+
 export function toggleArchiveBill(id, isArchival, type) {
-    console.log(isArchival);
-    
     return async dispatch => {
         try {
             dispatch({ type: types.BILL_UPDATE_FETCH });

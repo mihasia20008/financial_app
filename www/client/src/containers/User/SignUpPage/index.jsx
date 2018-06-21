@@ -347,7 +347,7 @@ class SignUpPage extends Component {
         const { isSignUp } = this.state;
 
         if (localStorage.getItem('user'))
-            return <Redirect to={{ pathname: '/actions' }} />;
+            return <Redirect to={{ pathname: '/bills' }} />;
 
         if (typeof isSignUp !== 'undefined')
             return <Redirect to={{ pathname: '/needconfirm' }} />;

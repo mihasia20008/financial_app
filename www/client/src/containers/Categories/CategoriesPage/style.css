@@ -1,0 +1,11 @@
+.categories {
+    display: flex;
+    flex-wrap: wrap;
+    min-height: calc(100vh - 62px);
+}
+
+.categories__item {
+    flex-basis: 25%;
+    margin-bottom: 20px;
+    padding: 0 10px;
+}

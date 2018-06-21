@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import cx from 'classnames';
 
 import { toCapitalize, formatNumber } from '../../helpers';
-import { deleteBill, toggleArchiveBill } from '../../store/bill/actions';
+import { deleteOperation } from '../../store/operation/actions';
 
 import './style.css';
 
-class BillCard extends Component {
+class ActionCard extends Component {
     constructor(props) {
         super(props);
 
@@ -31,14 +31,14 @@ class BillCard extends Component {
     }
 
     handleDeleteBill(id) {
-        this.props.deleteBill(id);
+        this.props.deleteOperation(id);
         this.toggleActions();
     }
 
-    handleToggleArchiveBill(id, isArchival, type) {
-        this.props.toggleArchiveBill(id, isArchival, type);
-        this.toggleActions();
-    }
+    // handleToggleArchiveBill(id, isArchival, type) {
+    //     this.props.toggleArchiveBill(id, isArchival, type);
+    //     this.toggleActions();
+    // }
 
     handleOutsideClick(event) {
         if (this.node && this.node.contains(event.target)) return;     
@@ -48,13 +48,13 @@ class BillCard extends Component {
     renderBillType(type) {
         switch(type) {
             case 1:
-                return 'Банковская карта';
+                return 'Расход';
             case 2:
                 return 'Кредитный счёт';
             case 3:
                 return 'Депозитный счёт';
             default:
-                return 'Наличные средства';
+                return 'Доход';
         }
     }
 
@@ -71,39 +71,31 @@ class BillCard extends Component {
 
     render() {
         const { open } = this.state;
-        const { id, type, name, value, currency, number, limit, isArchival } = this.props;
+        const { id, type, amount, comment, bill, date } = this.props;
         return ([
             <button type="button" key={0} className={cx("bill", {
-                'bill--cash': type === 3,
+                'bill--cash': type === 2,
                 'bill--card': type === 1,
-                'bill--credit': type === 2,
-                'bill--deposit': type === 0,
-                'bill--archive': isArchival,
+                'bill--credit': type === 0,
+                'bill--deposit': type === 3,
                 'bill--swype': open
             })} onClick={() => this.toggleActions()}>
-                <h3 className="bill__name">{toCapitalize(name)}</h3>
+                <h3 className="bill__name">{date.substr(0, 10)}</h3>
                 <p className="bill__type">
                     Тип: 
                     <b className="bill__type-name">{this.renderBillType(type)}</b>
                 </p>
-                {typeof number !== 'undefined' ? <p className="bill__number">
-                    <span>****</span>
-                    <span>****</span>
-                    <span>****</span>
-                    <span>{number}</span>
-                </p> : ''}
                 <div className="bill__info">
                     <div className="bill__balance">
                         <span className="bill__value">
-                            <b className="bill__value-name">{formatNumber(value)}</b>
-                            {this.renderBillCurrency(currency)}
+                            <b className="bill__value-name">{formatNumber(amount)}</b>
+                            {this.renderBillCurrency(typeof bill !== 'undefined' ? bill.currency : 0)}
                         </span>
-                        <span className="bill__text">Баланс</span>
+                        <span className="bill__text">Сумма операции</span>
                     </div>
-                    {typeof limit !== 'undefined' ? <div className="bill__limit">
+                    {typeof bill !== 'undefined' ? <div className="bill__limit">
                         <span className="bill__value">
-                            <b className="bill__value-name">{formatNumber(limit)}</b>
-                            {this.renderBillCurrency(currency)}
+                            <b className="bill__value-name">{bill.name}</b>
                         </span>
                         <span className="bill__text">Лимит</span>
                     </div> : ''}
@@ -118,7 +110,7 @@ class BillCard extends Component {
                         <h5 className="bill-action__name">Изменить</h5>
                     </button>
                 </div> */}
-                <div className="bill-actions__item">
+                {/* <div className="bill-actions__item">
                     <button type="button" 
                         className="bill-action bill-action--archive"
                         onClick={() => this.handleToggleArchiveBill(id, !isArchival, type)}>
@@ -129,7 +121,7 @@ class BillCard extends Component {
                             {isArchival ? 'Архивный' : 'В архив'}
                         </h5>
                     </button>
-                </div>
+                </div> */}
                 <div className="bill-actions__item">
                     <button type="button" 
                         className="bill-action bill-action--delete"
@@ -145,7 +137,7 @@ class BillCard extends Component {
     }
 }
 
-BillCard.propTypes = {
+ActionCard.propTypes = {
     type: PropTypes.number.isRequired, 
     name: PropTypes.string.isRequired, 
     value: PropTypes.number.isRequired, 
@@ -153,18 +145,18 @@ BillCard.propTypes = {
     number: PropTypes.string, 
     limit: PropTypes.number,
     isArchival: PropTypes.bool.isRequired,
-    deleteBill: PropTypes.func.isRequired,
-    toggleArchiveBill: PropTypes.func.isRequired
+    deleteOperation: PropTypes.func.isRequired,
+    // toggleArchiveBill: PropTypes.func.isRequired
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        deleteBill: id => dispatch(deleteBill(id)),
-        toggleArchiveBill: (id, isArchival, type) => dispatch(toggleArchiveBill(id, isArchival, type))
+        deleteOperation: id => dispatch(deleteOperation(id)),
+        // toggleArchiveBill: (id, isArchival, type) => dispatch(toggleArchiveBill(id, isArchival, type))
     };
 }
 
 export default connect(
     null,
     mapDispatchToProps
-)(BillCard);
+)(ActionCard);

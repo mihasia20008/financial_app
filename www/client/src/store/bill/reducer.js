@@ -53,6 +53,7 @@ export default function reduce(state = initialState, action = {}) {
                 isFetching: false
             });
         case types.BILL_UPDATE_SUCCESS:
+        case types.BILL_UPDATE_DATA:
             return Object.assign({}, state, {
                 bills: Object.assign(state.bills, {
                     [`${action.bill.id}`]: action.bill

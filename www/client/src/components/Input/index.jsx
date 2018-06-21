@@ -3,11 +3,17 @@ import PropTypes from 'prop-types';
 
 import InputRadio from './InputRadio';
 import InputText from './InputText';
+import InputSelect from './InputSelect';
 
 const Input = ({type, onBlurEvent, onChangeEvent, ...rest}) => {
     switch(type) {
         case 'radio':
             return <InputRadio
+                onBlurParent={target => onBlurEvent(target)}
+                onChangeParent={target => onChangeEvent(target)}
+                {...rest} />;
+        case 'select':
+            return <InputSelect
                 onBlurParent={target => onBlurEvent(target)}
                 onChangeParent={target => onChangeEvent(target)}
                 {...rest} />;

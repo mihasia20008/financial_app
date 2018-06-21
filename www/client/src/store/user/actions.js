@@ -2,6 +2,8 @@ import axios from 'axios';
 import * as types from './actionTypes';
 
 import { getBills } from '../bill/actions';
+import { getCategories } from '../category/actions';
+import { getOperations } from '../operation/actions';
 
 export function authUser(authData) {
     return async dispatch => {
@@ -14,6 +16,8 @@ export function authUser(authData) {
                         const { data: user } = res;
                         if (user.confirmAccount) {
                             dispatch(getBills(user.id));
+                            dispatch(getCategories(user.id));
+                            dispatch(getOperations(user.id));
                             dispatch({ type: types.USER_AUTH_SUCCESS, user });
                         }
                         else 
@@ -59,6 +63,8 @@ export function getUser(login) {
                     axios.get(`/api/user?login=${login}`)
                         .then(res => {
                             dispatch(getBills(res.data.id));
+                            dispatch(getCategories(res.data.id));
+                            dispatch(getOperations(res.data.id));
                             resolve(dispatch({ type: types.USER_GET_SUCCESS, user: res.data}))
                         })
                         .catch(err => {

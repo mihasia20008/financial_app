@@ -19,6 +19,8 @@ class App extends Component {
 		this.state = {
             menuIsOpen: false,
             headerHidden: false,
+            filters: false,
+            sort: false,
             title: 'Загрузка...',
             path: null
         };
@@ -57,7 +59,7 @@ class App extends Component {
 	render() {
         const { component: Chidren, userId, isFetching, isLogout } = this.props;
         const { pathname } = this.props.location;        
-        const { title, menuIsOpen, headerHidden } = this.state;
+        const { title, menuIsOpen, headerHidden, filters, sort } = this.state;
         
         if (isLogout)
             return <Redirect to="/" />;
@@ -68,7 +70,11 @@ class App extends Component {
 					<header className={cx('app__header', {
                         'app__header--hidden': headerHidden
                     })}>
-						<Header title={title} headerHidden={headerHidden} menuIsOpen={menuIsOpen} toggleMenu={this.handlerToggleMenu} />
+                        <Header title={title} 
+                            filters={filters}
+                            sort={sort}
+                            menuIsOpen={menuIsOpen} 
+                            toggleMenu={this.handlerToggleMenu} />
 					</header>
 					<main className="app__main">
 						<Chidren userId={userId} getDataOnLoad={data => this.handlerGetChildData(data)} path={pathname} />
@@ -95,7 +101,10 @@ App.propTypes = {
 
 function mapStateToProps (state) {
     return {
-        isFetching: state.bill.isFetching || state.user.isFetching,
+        isFetching: state.bill.isFetching 
+            || state.user.isFetching 
+            || state.category.isFetching 
+            || state.operation.isFetching,
         userId: state.user.id,
         isLogout: state.user.isLogout
     };

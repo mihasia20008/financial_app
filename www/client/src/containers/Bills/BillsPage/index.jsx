@@ -19,7 +19,7 @@ class BillsPage extends Component {
         super(props);
 
         this.state = {
-            sort: 'create-down',
+            sort: 'create-up',
             filter: {
                 archive: {
                     value: '0',
@@ -67,6 +67,7 @@ class BillsPage extends Component {
         this.sortBills = this.sortBills.bind(this);
         this.filterBills = this.filterBills.bind(this);
     }
+    
     componentDidMount() {
         const { getDataOnLoad, path } = this.props;
 

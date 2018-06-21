@@ -3,11 +3,13 @@ const OutOperation = require('../models').outOperation;
 const TransOperation = require('../models').transOperation;
 const DebtOperation = require('../models').debtOperation;
 
+const findOneCategory = require('./categories').findOneCategory;
+
 module.exports = {
     createType(type, operation, data) {
         return new Promise((resolve, reject) => {
             switch (type) {
-                case 0:
+                case '0':
                     InOperation.create({
                         origin: data.origin,
                         CategoryId: data.category,
@@ -24,7 +26,7 @@ module.exports = {
                         )))
                         .catch(err => reject(err)); 
                     break;
-                case 1:
+                case '1':
                     OutOperation.create({
                         place: data.place,
                         CategoryId: data.category,
@@ -41,7 +43,7 @@ module.exports = {
                         )))
                         .catch(err => reject(err)); 
                     break;
-                case 2:
+                case '2':
                     TransOperation.create({
                         addressee: data.addressee,
                         OperationId: operation.id
@@ -56,7 +58,7 @@ module.exports = {
                         )))
                         .catch(err => reject(err)); 
                     break;
-                case 3:
+                case '3':
                     DebtOperation.create({
                         isOut: data.isOut,
                         OperationId: operation.id

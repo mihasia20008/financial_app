@@ -187,7 +187,7 @@ class RestrePasswordPage extends Component {
         const { isChanged } = this.state;
 
         if (localStorage.getItem('user'))
-            return <Redirect to={{ pathname: '/actions' }} />;
+            return <Redirect to={{ pathname: '/bills' }} />;
 
         if (typeof this.state.error !== 'undefined' && this.state.error)
             return <Redirect to={{ pathname: '/' }} />;

@@ -67,7 +67,7 @@ class SignInPage extends Component {
         const { isAuth } = this.props;
 
         if (isAuth === 1 || localStorage.getItem('user'))
-            return <Redirect to={{ pathname: '/actions' }} />;
+            return <Redirect to={{ pathname: '/bills' }} />;
 
         if (isAuth === 2)
             return <Redirect to={{ pathname: '/needconfirm' }} />;

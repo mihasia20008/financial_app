@@ -76,7 +76,7 @@ class ForgotPage extends Component {
 
     render() {
         if (localStorage.getItem('user'))
-            return <Redirect to={{ pathname: '/actions' }} />;
+            return <Redirect to={{ pathname: '/bills' }} />;
 
         const { isSend, email } = this.state;
 

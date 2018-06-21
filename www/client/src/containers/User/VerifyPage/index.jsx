@@ -28,7 +28,7 @@ class VerifyPage extends Component {
         
 
         if (isConfirm !== 2 && localStorage.getItem('user'))
-            return <Redirect to={{ pathname: '/actions' }} />;
+            return <Redirect to={{ pathname: '/bills' }} />;
 
         if (typeof hasError !== 'undefined' && hasError)
             return <Redirect to={{ pathname: '/' }} />;

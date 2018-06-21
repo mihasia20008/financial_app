@@ -11,7 +11,7 @@
     display: flex;
 }
 
-.menu__item:nth-last-child(2) {
+.menu__item:nth-last-child(1) {
     margin-top: auto;
 }
 

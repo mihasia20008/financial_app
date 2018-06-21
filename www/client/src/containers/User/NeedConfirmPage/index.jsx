@@ -14,7 +14,7 @@ class NeedConfirmPage extends Component {
 
     render() {
         if (localStorage.getItem('user'))
-            return <Redirect to={{ pathname: '/actions' }} />;
+            return <Redirect to={{ pathname: '/bills' }} />;
 
         return (
             <div className="auth-page">

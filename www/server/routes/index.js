@@ -6,11 +6,13 @@ const categoriesController = require('../controllers').categories;
 const getTemplate = (path) => {
   switch (path) {
     case '/actions':
-      return {title: 'История', headerHidden: false};
+      return {title: 'История', headerHidden: false, filters: false, sort: false};
     case '/bills':
-      return {title: 'Счета', headerHidden: false};
+      return {title: 'Счета', headerHidden: false, filters: true, sort: true};
+    case '/categories':
+      return {title: 'Категории', headerHidden: false, filters: false, sort: false};
     default:
-      return {title: 'Главная', headerHidden: true};    
+      return {title: 'Главная', headerHidden: true, filters: false, sort: false};    
   }
 };
 
