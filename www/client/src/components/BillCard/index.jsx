@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import cx from 'classnames';
 
 import { toCapitalize, formatNumber } from '../../helpers';
-import { deleteBill } from '../../store/bill/actions';
+import { deleteBill, toggleArchiveBill } from '../../store/bill/actions';
 
 import './style.css';
 
@@ -32,6 +32,12 @@ class BillCard extends Component {
 
     handleDeleteBill(id) {
         this.props.deleteBill(id);
+        this.toggleActions();
+    }
+
+    handleToggleArchiveBill(id, isArchival, type) {
+        this.props.toggleArchiveBill(id, isArchival, type);
+        this.toggleActions();
     }
 
     handleOutsideClick(event) {
@@ -65,13 +71,14 @@ class BillCard extends Component {
 
     render() {
         const { open } = this.state;
-        const { type, name, value, currency, number, limit } = this.props;
+        const { id, type, name, value, currency, number, limit, isArchival } = this.props;
         return ([
             <button type="button" key={0} className={cx("bill", {
                 'bill--cash': type === 0,
                 'bill--card': type === 1,
                 'bill--credit': type === 2,
                 'bill--deposit': type === 3,
+                'bill--archive': isArchival,
                 'bill--swype': open
             })} onClick={() => this.toggleActions()}>
                 <h3 className="bill__name">{toCapitalize(name)}</h3>
@@ -103,24 +110,30 @@ class BillCard extends Component {
                 </div>
             </button>,
             <div key={1} className="bill-actions" ref={node => { this.node = node; }}>
-                <div className="bill-actions__item">
+                {/* <div className="bill-actions__item">
                     <button type="button" className="bill-action bill-action--edit">
                         <svg className="bill-action__icon">
                             <use xlinkHref="#edit-icon" />
                         </svg>
                         <h5 className="bill-action__name">Изменить</h5>
                     </button>
-                </div>
+                </div> */}
                 <div className="bill-actions__item">
-                    <button type="button" className="bill-action bill-action--archive">
+                    <button type="button" 
+                        className="bill-action bill-action--archive"
+                        onClick={() => this.handleToggleArchiveBill(id, !isArchival, type)}>
                         <svg className="bill-action__icon">
                             <use xlinkHref="#archive-icon" />
                         </svg>
-                        <h5 className="bill-action__name">В архив</h5>
+                        <h5 className="bill-action__name">
+                            {isArchival ? 'Архивный' : 'В архив'}
+                        </h5>
                     </button>
                 </div>
                 <div className="bill-actions__item">
-                    <button type="button" className="bill-action bill-action--delete">
+                    <button type="button" 
+                        className="bill-action bill-action--delete"
+                        onClick={() => this.handleDeleteBill(id)}>
                         <svg className="bill-action__icon">
                             <use xlinkHref="#delete-icon" />
                         </svg>
@@ -139,12 +152,15 @@ BillCard.propTypes = {
     currency: PropTypes.number.isRequired, 
     number: PropTypes.string, 
     limit: PropTypes.number,
-    deleteBill: PropTypes.func.isRequired
+    isArchival: PropTypes.bool.isRequired,
+    deleteBill: PropTypes.func.isRequired,
+    toggleArchiveBill: PropTypes.func.isRequired
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        deleteBill: id => dispatch(deleteBill(id))
+        deleteBill: id => dispatch(deleteBill(id)),
+        toggleArchiveBill: (id, isArchival, type) => dispatch(toggleArchiveBill(id, isArchival, type))
     };
 }
 

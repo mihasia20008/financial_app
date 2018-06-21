@@ -36,6 +36,27 @@ export function deleteBill(id) {
     };
 }
 
+export function toggleArchiveBill(id, isArchival, type) {
+    console.log(isArchival);
+    
+    return async dispatch => {
+        try {
+            dispatch({ type: types.BILL_UPDATE_FETCH });
+            await new Promise((resolve, reject) => {
+                axios.put(`/api/bill?id=${id}`, {
+                    convert: false,
+                    isArchival,
+                    type
+                })
+                    .then(res => dispatch({ type: types.BILL_UPDATE_SUCCESS, bill: res.data }))
+                    .catch(err => reject(err));
+            });
+        } catch (err) {
+            dispatch({ type: types.BILL_UPDATE_ERROR, err });
+        }
+    };
+}
+
 export function getBills(user) {
     return async dispatch => {
         try {

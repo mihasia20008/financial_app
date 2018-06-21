@@ -22,7 +22,7 @@ class BillsPage extends Component {
             sort: 'create-down',
             filter: {
                 archive: {
-                    value: '1',
+                    value: '0',
                     label: 'Показывать архиные счета?',
                     type: 'radio',
                     values: [
@@ -139,12 +139,13 @@ class BillsPage extends Component {
         const { bills } = this.props;
         const { filter } = this.state;
 
-        let inFilter = true;                        
+        if (typeof bills[id] === 'undefined')
+            return false;
         if (filter.archive.value === '0' && bills[id].isArchival)
-            inFilter = false;                        
+            return false;                        
         if (filter.types.value.every(item => +item !== bills[id].type))
-            inFilter = false;
-        return inFilter;
+            return false;
+        return true;
     }
 
     render() {   

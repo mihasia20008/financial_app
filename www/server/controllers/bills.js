@@ -83,14 +83,14 @@ module.exports = {
                 delete bill.UserId;
                 res.status(201).send(bill)
             })
-            .catch(err => res.status(400).send(err.toString()));
+            .catch(err => res.status(400).send(err));
     },
     delete(req, res) {
         const { body } = req;
         Bill.findById(req.query.id)
             .then(bill => bill.destroy())
             .then(() => res.status(202).send({}))
-            .catch(err => res.status(400).send(err.toString()));
+            .catch(err => res.status(400).send(err));
     },
     update(req, res) {
         const { body } = req;
@@ -112,7 +112,7 @@ module.exports = {
             })
             .then(result => billType.updateType(result.type, result.bill.dataValues, body))
             .then(bill => res.status(202).send(bill))
-            .catch(err => res.status(400).send(err.toString()));
+            .catch(err => res.status(400).send(err));
     },
     showAll(req, res) {        
         Bill.findAll({
@@ -135,7 +135,7 @@ module.exports = {
             }) 
             // .then(bills => bills.sort((a, b) => a.id - b.id))
             .then(bills => res.status(200).send(bills))
-            .catch(err => res.status(400).send(err));         
+            .catch(err => res.status(400).send(err.toString()));         
     },
     showOne(req, res) {
         Bill.findOne({
@@ -150,7 +150,7 @@ module.exports = {
         })
             .then(bill => assignBill(bill))
             .then(bill => res.status(200).send(bill))
-            .catch(err => res.status(400).send(err.toString()));
+            .catch(err => res.status(400).send(err));
     },
 
     changeBalance(id, value) {
